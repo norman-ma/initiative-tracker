@@ -1,0 +1,514 @@
+body {
+    --bgcolor1: #0D1821;
+    --bgcolor2: #121E2B;
+    --bgcolor3: #233043;
+    --bgcolor4: #3D465A;
+    --bgcolor5: #535F79;
+    --accent-blue: #3273ED;
+    --accent-blue2: #0F45A9;
+    --accent-red: #ED7D3A;
+    --accent-green: #0CCE6B;
+    
+    background: var(--bgcolor1);
+    color: white;
+    font-family: Roboto;
+}
+
+.header {
+    font-weight: bolder;
+    font-size: 1.3em;
+    color: #FFFFFFBB;
+}
+
+.main {
+    margin-top: 2.5vh;
+    height: 95vh;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px var(--bgcolor1);
+    margin:  0;
+    width: auto;
+    max-width: 100%;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100;
+}
+
+h1{
+    font-family: Righteous;
+    padding: 20px 0px;
+    text-align: center;
+}
+
+#current {
+    position: sticky;
+    top: 0.5rem;
+    z-index: 5000;
+}
+
+.current {
+    background: var(--bgcolor2);
+    border-radius: 10px;
+}
+
+.current .title{
+    padding: 0.5rem 0;
+}
+
+.current div {
+    display: flex;
+    align-items: center;
+}
+
+#current-creature {
+    font-size: 1.5em;
+    font-weight: bold;
+    border-bottom: 1px solid var(--bgcolor3);
+    justify-content: space-between;
+}
+
+#current-creature>div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+}
+
+#current-creature>div .title{
+    color: var(--bgcolor5);
+    font-weight: lighter;
+    font-size: 0.4em
+}
+
+#current-creature .next{
+    display: flex;
+    flex-direction: row-reverse
+}
+
+.current .btn-primary,
+.current .btn-primary:hover{
+    position: relative;
+    background: none;
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.current .btn-primary:hover img{
+    background: none;
+    filter: invert(80%);
+}
+
+img.rotate-right{
+    filter: invert(100%);
+    transform: rotate(270deg)
+}
+
+#current-status{
+    padding: 10px 0px;
+    background: var(--bgcolor2);
+    border-radius: inherit;
+    font-size: 0.6em;
+    font-weight: bold;
+    padding: 1em;
+    gap: 0.5em;
+    flex-wrap: wrap;
+}
+
+.current-condition{
+    background: var(--accent-blue);
+    border-radius: 1rem;
+    text-align: center;
+    padding: 0.5rem 0.7rem;
+    cursor: default;
+}
+
+.current-condition .title{
+    margin-right: 0.2em;
+    padding: 0px;
+    color: inherit;
+}
+
+.current-condition .value{
+    padding-left: 0.2em;
+    border-left: white 1px solid;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+#toggleAddCreatureBtn {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-items:center;
+    margin: 10px 0px;
+    gap: 1rem;
+    width: 100%;
+}
+
+#toggleAddCreatureBtn .btn.btn-link {
+    background: none;
+    font-size: 0.7em;
+    text-decoration: none;
+    color: var(--bgcolor4);
+    font-weight: normal;
+    width: 4rem;
+    border-radius: 0;
+    padding: 1rem 0;
+}
+
+#toggleAddCreatureBtn .btn.btn-link:hover{
+    background: none;
+    color: var(--bgcolor3);
+}
+
+#toggleAddCreatureBtn .btn {
+    background: var(--accent-blue);
+    border: none;
+    height: 50px; 
+    width: 50px;
+    border-radius: 50%;
+    font-size: 2em;
+    padding: 0px;
+    font-weight: 900;
+}
+
+#toggleAddCreatureBtn .btn:hover {
+    background: var(--accent-blue2);
+}
+
+#addCreature {
+    position: absolute;
+    width: 30rem;
+    max-width: 100%;
+    border-radius: 10px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 500;
+    background: var(--bgcolor2);
+}
+
+#addCreature .titleContainer {
+    width: 100%;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="number"]{
+    background: var(--bgcolor4);
+    color: inherit;
+    border: var(--bgcolor3) 1px solid;
+}
+
+#addCreature input[type="text"]:focus , input[type="number"]:focus {
+    background: var(--bgcolor4);
+    color: inherit;
+    border: var(--bgcolor3) 1px solid;
+}
+
+#addCreature .input-group-text{
+    background: var(--bgcolor3);
+    color: inherit;
+    border: var(--bgcolor2);
+}
+
+#addCreature .btnContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#inputContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+#addCreature .btn-primary{
+    background: var(--accent-blue);
+    border: var(--bgcolor4);
+    color: inherit;
+    width: 80px;
+}
+
+#addCreature .btn-primary:hover{
+    background: var(--accent-blue2);
+}
+
+#addCreature .btn-secondary{
+    background: var(--bgcolor3);
+    border: var(--bgcolor4);
+    color: inherit;
+    width: 80px;
+}
+
+#list {
+    padding: 0;
+}
+
+.listItem {
+    background: var(--bgcolor3);
+    margin: 1rem 0;
+    font-size: 0.6em;
+}
+
+.creatureInfo {
+    font-size: 2em;
+    padding: 0.5rem 0;
+    justify-content: space-between;
+}
+
+.creatureInfo>div{
+    border-left: 1px solid var(--bgcolor4);
+    width: auto;
+}
+
+.creatureInfo .title {
+    font-size: 0.6em;
+}
+
+.creatureInfo input.name{
+    background: inherit;
+    border: none;
+    color: inherit;
+    width: 8rem;
+}
+
+.creatureInfo .options{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.5em;
+    padding-top: 0.5rem;
+}
+
+.creatureInfo .btn{
+    border: none;
+    color: inherit;
+    height: 3em;
+}
+
+.creatureInfo .btn img{
+    filter: invert(100%);
+}
+
+.edit-btn,
+.delete-btn,
+.duplicate-btn{
+    width: 3rem;
+    background: var(--accent-blue);
+}
+
+.edit-btn:first-child:hover,
+:not(.btn-check)+.delete-btn:hover,
+:not(.btn-check)+.duplicate-btn:hover{
+    background: var(--accent-blue2);
+}
+
+.hpArea {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.hp {
+    width: 30%;
+    font-weight: bold;
+}
+
+.temphp {
+    font-weight:lighter;
+    margin-left: 5px;
+}
+
+.modhp{
+    display: flex;
+    flex-wrap: wrap;
+    width: 9em;
+    align-items: center;
+}
+
+.modHPOptions .btn{
+    height: 1.1rem;
+    width: 20px;
+    display: inline-flex;
+    border: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.heal {
+    border-top-left-radius: 0;
+    background: var(--accent-blue);
+}
+
+.btn-group-vertical>.heal:hover{
+    background: var(--accent-blue2);
+}
+
+.damage {
+    border-bottom-left-radius: 0;
+    background: var(--accent-blue);
+}
+
+.btn-group-vertical>.damage:hover{
+    background: var(--accent-blue2);
+}
+
+.creatureInfo .btn.btn-link{
+    font-size: 0.5em;
+    text-decoration: none;
+    color: inherit;
+    font-weight: normal;
+    width: 4rem;
+}
+
+.hp-container{
+    width: 100% !important;
+}
+
+.toggle-status {
+    background: none;
+    border: none;
+    height: 2rem;
+    width: 2rem;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.toggle-status img{
+    width: 100%;
+}
+
+.toggle-status:hover img{
+    filter: invert(80%);
+}
+
+.toggle-status img.rotate-up{
+    transform: rotate(180deg);
+}
+
+:not(.btn-check)+.toggle-status:hover{
+    background: none;
+}
+
+.statusArea{
+    padding: 1em;
+    border-top: var(--bgcolor4) solid 1px;
+    gap: 1em;
+}
+
+.statusArea .input-group.exhaustion{
+    width: 9rem;
+}
+
+.statusArea .input-group-text,
+.statusArea .form-control {
+    font-size: 0.9em;
+    font-weight: bolder;
+    color: inherit;
+    border: none;
+}
+
+.exhaustionArea {
+    width: auto;
+    padding: 0;
+}
+
+.exhaustionArea .input-group-text.exhaustion{
+    font-size: 0.8em;
+    width: auto;
+    text-align: center;
+    background: var(--bgcolor2);
+}
+.exhaustionArea .form-control.exhaustion{
+    text-align: center;
+    margin-left: 0px !important;
+}
+
+.conditionArea {
+    display: flex;
+    gap: 5px;
+    padding: 0px;
+    flex-wrap: wrap;
+}
+
+.condition {
+    width: auto;
+}
+
+.condition .form-control .exhaustion{
+    font-size: 0.9em;
+    font-weight: bolder;
+    padding: 0px 0px 0px 2px;
+}
+
+
+.condition .form-control,
+.condition .input-group-text{
+    background: var(--bgcolor2);
+    color: inherit;
+    border: none;
+    cursor: default;
+}
+
+.input-group-text:has(> .form-check-input:checked),
+.input-group-text:has(> .form-check-input:checked) + .form-control{
+    background: var(--accent-blue);
+    color: inherit;
+    border: none;
+}
+
+.condition:hover .input-group-text, .condition:hover .form-control{
+    background: var(--bgcolor4);
+}
+
+.condition:hover .input-group-text:has(> .form-check-input:checked),
+.condition:hover .input-group-text:has(> .form-check-input:checked) + .form-control{
+    background: var(--accent-blue2);
+}
+
+
+@media only screen and (min-width: 1012px) {
+    .main {
+        margin: 0 6rem;
+        margin-top: 2.5vh;
+    }
+
+    #current-creature {
+        font-size: 3em;
+    }
+    
+    .creatureInfo .options{
+        width: 20rem;
+    }
+
+    .exhaustionArea{
+        width: 10%;
+        min-width: 8rem;
+    }
+
+    .conditionArea{
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 479px) {
+    .hp-container {
+        width: auto !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .main {
+        width: 100%;
+        padding: 0;
+    }
+}

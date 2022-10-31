@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="index.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+    <link rel="stylesheet" href="style.css">
+    <title>inittrakr | Initiative Tracker</title>
+</head>
+<body>
+    <div class="container main">
+        <div>
+            <h1>ini<span class="blue">tt</span>rakr</h1>
+        </div>
+        <div id="current" class="container-fluid current" style="display: none;" >
+            <div id="current-creature" class="row">
+                <div class="col-md-2"><div class="title">INITIATIVE</div><div id="current-initiative"></div></div>
+                <div class="col-md-6"><div class="title">NAME</div><div id="current-name"></div></div>
+                <div class="col-md-2"><div class="title">HP</div><div id="current-hp"></div></div>
+                <div class="col-md-2 next"><button class="btn btn-primary" onclick="nextCreature()"><img class="rotate-right" src="images/chevron-icon.svg" alt=""></button></div>
+            </div>
+            <div id="current-status"></div>
+        </div>
+        <div class="container-fluid body">
+            <div id="toggleAddCreatureBtn">
+                <button onclick="toggleAdd();" class="btn btn-primary" title="Add Creature">+</button>
+                <div id="clear-all" class="btn btn-link" onclick="clearAll(false)">Clear All</div>
+                <div id="untoggle-all" class="btn btn-link" onclick="toggleAll(false)">Untoggle All</div>
+                <div id="toggle-all" class="btn btn-link" onclick="toggleAll(true)">Toggle All</div>
+            </div>
+            
+            <div id="addCreature" style="display:none;">
+                <div class="titleContainer"><h2>Add Creature</h2></div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name</span>
+                    <input id="creatureName" class="form-control" type="text"/>
+                </div>
+                <div id="inputContainer">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Initiative</span>
+                        <input id="creatureInit" class="form-control" type="number" min="1"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">HP</span>
+                        <input id="creatureHP" class="form-control" type="number"/>
+                    </div>
+                </div>
+                <div class="btnContainer btn-group">
+                    <button id="addCreatureBtn" class="btn btn-primary" onclick="addCreature()">Add</button>
+                    <button class="btn btn-secondary" onclick="$('#addCreature').toggle();" >Cancel</button>
+                </div>
+            </div>
+            <div id="list" class="container-fluid"></div>
+        </div>
+    </div>
+</body>
+</html>
