@@ -22,7 +22,6 @@ body {
 
 .main {
     margin-top: 2.5vh;
-    height: 95vh;
     border-radius: 20px;
     box-shadow: 0px 0px 5px var(--bgcolor1);
     margin:  0;
@@ -45,17 +44,14 @@ h1{
 
 #current {
     position: sticky;
-    top: 0.5rem;
+    top: 0;
+    padding: 1em 0.5em;
     z-index: 5000;
 }
 
 .current {
     background: var(--bgcolor2);
     border-radius: 10px;
-}
-
-.current .title{
-    padding: 0.5rem 0;
 }
 
 .current div {

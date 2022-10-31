@@ -339,7 +339,7 @@ function nextCreature(){
         state.current = 0;
     }
     updateCurrent();
-    window.scroll($)
+    window.scroll(0, $(`#creature-${state.current}`).offset().top - ($('#current').height() + 35))
 }
 
 function toggleAll(toggle) {
