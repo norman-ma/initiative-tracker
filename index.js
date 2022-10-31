@@ -378,3 +378,4 @@ function getCookie() {
 }
 
 buildList();
+buildList();
