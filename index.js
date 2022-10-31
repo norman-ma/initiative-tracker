@@ -50,7 +50,7 @@ function updateCurrent(){
         if(creature.exhaustion > 0) {
             currStatus.append(`<div class="current-condition"><div class="title">EXHAUSTION</div><div class="value">${creature.exhaustion}</div></div>`);
         }
-        for(let condition of conditions) {
+        for(let condition of creature.conditions) {
             if(creature.status[condition]){
                 currStatus.append(`<div class="current-condition">${condition.toUpperCase()}</div>`);
             }
