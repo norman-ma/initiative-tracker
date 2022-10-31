@@ -208,7 +208,7 @@ function buildListItem(index) {
     var statusArea = $(`<div id='status-${index}' class='row statusArea' style="display: none;"></div>`);
     statusArea.append(`<div class="exhaustionArea"><div class="input-group"><span class="input-group-text exhaustion">EXHAUSTION:</span><input type='number' id='exhaustion-${index}' class="form-control exhaustion" min='0' max='6' value='${state.creatures[index].exhaustion}' onchange="updateExhaustion(${index})"/></div>`);
     var conditionArea = $("<div class='conditionArea'></div>");
-    for(let condition of conditions ){
+    for(let condition of creature.conditions ){
         var c = $(`<div class='condition input-group'><div class="input-group-text"><input type='checkbox' id='${condition}-${index}' class="form-check-input mt-0" onchange="toggleCondition(${index}, '${condition}')"}/></div><input class="form-control" value="${condition.toUpperCase()}" onclick="$('#${condition}-${index}').click()" readonly /></div>`);
         if(state.creatures[index].status[condition]){
             c.children('.input-group-text').children('input').prop('checked', true);
