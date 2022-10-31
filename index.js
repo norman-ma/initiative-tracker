@@ -377,5 +377,4 @@ function getCookie() {
     return false;
 }
 
-buildList();
-buildList();
+$(document).ready(function(){buildList();})
