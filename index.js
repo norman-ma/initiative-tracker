@@ -1,14 +1,3 @@
-var state = getCookie() ? getCookie() : {
-    creatures: [],
-    edit: {
-        mode: false,
-        index: 0
-    },
-    current: 0
-};
-
-buildList();
-
 var conditions = [
     "blinded",
     "charmed",
@@ -26,6 +15,17 @@ var conditions = [
     "unconscious",
     "concentrating"
 ]
+
+var state = getCookie() ? getCookie() : {
+    creatures: [],
+    edit: {
+        mode: false,
+        index: 0
+    },
+    current: 0
+};
+
+buildList();
 
 function updateCurrent(){
     var creature = state.creatures[state.current];
@@ -50,7 +50,7 @@ function updateCurrent(){
         if(creature.exhaustion > 0) {
             currStatus.append(`<div class="current-condition"><div class="title">EXHAUSTION</div><div class="value">${creature.exhaustion}</div></div>`);
         }
-        for(let condition of creature.conditions) {
+        for(let condition of conditions) {
             if(creature.status[condition]){
                 currStatus.append(`<div class="current-condition">${condition.toUpperCase()}</div>`);
             }
@@ -208,7 +208,7 @@ function buildListItem(index) {
     var statusArea = $(`<div id='status-${index}' class='row statusArea' style="display: none;"></div>`);
     statusArea.append(`<div class="exhaustionArea"><div class="input-group"><span class="input-group-text exhaustion">EXHAUSTION:</span><input type='number' id='exhaustion-${index}' class="form-control exhaustion" min='0' max='6' value='${state.creatures[index].exhaustion}' onchange="updateExhaustion(${index})"/></div>`);
     var conditionArea = $("<div class='conditionArea'></div>");
-    for(let condition of creature.conditions ){
+    for(let condition of conditions ){
         var c = $(`<div class='condition input-group'><div class="input-group-text"><input type='checkbox' id='${condition}-${index}' class="form-check-input mt-0" onchange="toggleCondition(${index}, '${condition}')"}/></div><input class="form-control" value="${condition.toUpperCase()}" onclick="$('#${condition}-${index}').click()" readonly /></div>`);
         if(state.creatures[index].status[condition]){
             c.children('.input-group-text').children('input').prop('checked', true);
