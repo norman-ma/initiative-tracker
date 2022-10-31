@@ -25,8 +25,6 @@ var state = getCookie() ? getCookie() : {
     current: 0
 };
 
-buildList();
-
 function updateCurrent(){
     var creature = state.creatures[state.current];
     var init_el = $('#current-initiative');
@@ -378,3 +376,5 @@ function getCookie() {
     }
     return false;
 }
+
+buildList();
