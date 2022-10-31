@@ -7,6 +7,8 @@ var state = getCookie() ? getCookie() : {
     current: 0
 };
 
+buildList();
+
 var conditions = [
     "blinded",
     "charmed",
