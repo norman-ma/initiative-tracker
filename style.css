@@ -177,7 +177,29 @@ img.rotate-right{
     background: var(--accent-blue2);
 }
 
-#addCreature {
+.popup {
+    position: absolute;
+    top: 40%;
+    max-width: 100%;
+    border-radius: 10px;
+    padding: 2em;
+    display: flex;
+    gap: 1em;
+    z-index: 5000;
+    background: var(--bgcolor2);
+    align-items: center;
+}
+
+.popup .btn{
+    background: var(--accent-blue);
+    color: inherit;
+}
+
+.popup .btn:hover{
+    background: var(--accent-blue2);
+}
+
+#addCreature{
     position: absolute;
     width: 30rem;
     max-width: 100%;
@@ -285,6 +307,7 @@ input[type="number"]{
 .creatureInfo>div{
     border-left: 1px solid var(--bgcolor4);
     width: auto;
+    height: 3.5rem;
 }
 
 .creatureInfo .title {

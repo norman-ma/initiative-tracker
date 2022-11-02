@@ -6,60 +6,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
     <link rel="stylesheet" href="style.css">
     <title>inittrakr | Initiative Tracker</title>
 </head>
 <body>
-    <div class="container main">
-        <div>
-            <h1>ini<span class="blue">tt</span>rakr</h1>
-        </div>
-        <div id="current" class="container-fluid current" style="display: none;" >
-            <div id="current-creature" class="row">
-                <div class="col-md-2"><div class="title">INITIATIVE</div><div id="current-initiative"></div></div>
-                <div class="col-md-6"><div class="title">NAME</div><div id="current-name"></div></div>
-                <div class="col-md-2"><div class="title">HP</div><div id="current-hp"></div></div>
-                <div class="col-md-2 next"><button class="btn btn-primary" onclick="nextCreature()"><img class="rotate-right" src="images/chevron-icon.svg" alt=""></button></div>
+    <div ng-app="inittrakrApp">
+        <div class="container main" ng-controller="AppController">
+            <div>
+                <h1>inittrakr</h1>
             </div>
-            <div id="current-status"></div>
-        </div>
-        <div class="container-fluid body">
-            <div id="toggleAddCreatureBtn">
-                <button onclick="toggleAdd();" class="btn btn-primary" title="Add Creature">+</button>
-                <div id="clear-all" class="btn btn-link" onclick="clearAll(false)">Clear All</div>
-                <div id="untoggle-all" class="btn btn-link" onclick="toggleAll(false)">Untoggle All</div>
-                <div id="toggle-all" class="btn btn-link" onclick="toggleAll(true)">Toggle All</div>
-            </div>
-            
-            <div id="addCreature" style="display:none;">
-                <div class="titleContainer"><h2>Add Creature</h2></div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Name</span>
-                    <input id="creatureName" class="form-control" type="text"/>
+            <div id="current" class="container-fluid current" ng-if="state.creatures.length > 0">
+                <div id="current-creature" class="row">
+                    <div class="col-md-2"><div class="title">INITIATIVE</div><div id="current-initiative">{{state.creatures[state.current].initiative}}</div></div>
+                    <div class="col-md-6"><div class="title">NAME</div><div id="current-name">{{state.creatures[state.current].name}}</div></div>
+                    <div class="col-md-2"><div class="title">HP</div><div id="current-hp">{{state.creatures[state.current].hp}} <em class="temphp" ng-if="state.creatures[state.current].temphp > 0">({{state.creatures[state.current].temphp}})</em></div></div>
+                    <div class="col-md-2 next"><button class="btn btn-primary" ng-click="next()"><img class="rotate-right" src="images/chevron-icon.svg" alt=""></button></div>
                 </div>
-                <div id="inputContainer">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">INIT</span>
-                        <input id="creatureInit" class="form-control" type="number" min="1"/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">HP</span>
-                        <input id="creatureHP" class="form-control" type="number" min="1"/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">AC</span>
-                        <input id="creatureAC" class="form-control" type="number" min="1"/>
-                    </div>
-                </div>
-                <div class="btnContainer btn-group">
-                    <button id="addCreatureBtn" class="btn btn-primary" onclick="addCreature()">Add</button>
-                    <button class="btn btn-secondary" onclick="$('#addCreature').toggle();" >Cancel</button>
+                <div id="current-status">
+                    <div class="current-condition" ng-if="state.creatures[state.current].exhaustion > 0"><div class="title">EXHAUSTION</div><div class="value">{{state.creatures[state.current].exhaustion}}</div></div>
+                    <div class="current-condition" ng-if="value" ng-repeat="(condition, value) in state.creatures[state.current].status">{{condition.toUpperCase()}}</div>
                 </div>
             </div>
-            <div id="list" class="container-fluid"></div>
+            <div class="container-fluid body">
+                <div id="toggleAddCreatureBtn">
+                    <button ng-click="toggleAdd()" class="btn btn-primary" title="Add Creature">+</button>
+                    <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)">Clear All</div>
+                    <div id="untoggle-all" class="btn btn-link" ng-click="toggleAll(false)">Untoggle All</div>
+                    <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)">Toggle All</div>
+                    <div id="clear-all" class="btn btn-link" ng-if="state.creatures.length > 0">{{state.creatures.length}}</div>
+                </div>
+                
+                <div id="addCreature" ng-if="popup.display">
+                    <div class="titleContainer"><h2>Add Creature</h2></div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Name</span>
+                        <input id="creatureName" class="form-control" type="text" ng-model="popup.creature.name"/>
+                    </div>
+                    <div id="inputContainer">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">INIT</span>
+                            <input id="creatureInit" class="form-control" type="number" min="1" ng-model="popup.creature.initiative"/>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">HP</span>
+                            <input id="creatureHP" class="form-control" type="number" min="1" ng-model="popup.creature.maxhp"/>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">AC</span>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.ac"/>
+                        </div>
+                    </div>
+                    <div class="btnContainer btn-group">
+                        <button id="addCreatureBtn" class="btn btn-primary" ng-click="popupSubmit()">{{popup.buttonText}}</button>
+                        <button class="btn btn-secondary" ng-click="toggleAdd()" >Cancel</button>
+                    </div>
+                </div>
+                <div id="alert" class="popup" ng-if="alert.display">
+                    <div>{{alert.message}}</div>
+                    <div><button class="btn" ng-click="toggleAlert(false)">OK</button></div>
+                </div>
+                <div id="list" class="container-fluid">
+                    <div id="creature-{{$index}}" class='listItem container-fluid' ng-repeat="creature in state.creatures track by $index">
+                        <div class='creatureInfo row'>
+                            <div>
+                                <div class="title">INITIATIVE</div>{{creature.initiative}}
+                            </div>
+                            <div>
+                                <div class="title">NAME</div>
+                                <input id="name-{{$index}}" class="name" value="{{creature.name}}" ng-model="creature.name">
+                            </div>
+                            <div>
+                                <div class="title">AC</div>{{creature.ac}}
+                            </div>
+                            <div class="hp-container">
+                                <div class="title">HP <em class="temphp">(TEMP HP)</em></div>
+                                <div id="hpArea-{{$index}}" class='hpArea'>
+                                    <div id="hp-{{$index}}" class="hp">{{creature.hp}} <em class="temphp" ng-if="creature.temphp > 0">({{creature.temphp}})</em></div>
+                                    <div id='modHP-{{$index}}' class='modhp input-group' ng-if="creature.maxhp > 0">
+                                        <input class="form-control" id='modHPValue-{{$index}}' type='number' ng-model="creature.modhp.hp">
+                                        <input class="form-control" id='tempHPValue-{{$index}}' type='number' ng-model="creature.modhp.temphp">
+                                        <div class='modHPOptions btn-group'>
+                                            <button class="heal btn btn-primary" ng-click="modHP($index, 'heal')">+</button>
+                                            <button class="damage btn btn-secondary" ng-click="modHP($index, 'damage')">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <div>
+                                    <div class="btn-group">
+                                        <button class="btn edit-btn" ng-click="toggleEdit($index)"><img src="images/edit-icon.svg" alt="Edit" title="Edit" /></button>
+                                        <button class="btn duplicate-btn" ng-click="duplicate($index)"><img src="images/copy-icon.svg" alt="Duplicate" title="Duplicate" />
+                                        </button><button class="btn delete-btn" ng-click='delete($index)'><img src="images/delete-icon.svg" alt="Delete" title="Delete" /></button>
+                                    </div>
+                                    <button class="btn btn-link" id="reset-${$index}" ng-click="reset($index)">Reset</button>
+                                </div>
+                                <button id="toggle-status-${$index}" class="btn toggle-status" title="Toggle Creature Status" ng-click="toggleConditions($index)"><img ng-class="{'rotate-up': creature.displayConditions}" src="images/chevron-icon.svg" alt="Toggle Status" /></button>
+                            </div>
+                        </div>
+                        <div id='status-{{$index}}' class='row statusArea' ng-if="creature.displayConditions">
+                            <div class="exhaustionArea">
+                                <div class="input-group">
+                                    <span class="input-group-text exhaustion">EXHAUSTION:</span>
+                                    <input type='number' id='exhaustion-{{$index}}' class="form-control exhaustion" min='0' max='6' ng-model='creature.exhaustion' />
+                                </div>
+                            </div>
+                            <div class='conditionArea'>
+                                <div class='condition input-group' ng-repeat="(condition, value) in creature.status">
+                                    <div class="input-group-text">
+                                        <input type='checkbox' id='{{condition}}-{{$index}}' class="form-check-input mt-0" ng-model="creature.status[condition]"/>
+                                    </div>
+                                    <div class="form-control" ng-click="creature.status[condition] = !creature.status[condition]">{{condition.toUpperCase()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
