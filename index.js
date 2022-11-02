@@ -65,11 +65,13 @@ function addCreature() {
     let name_el = $("#creatureName");
     let initiative_el = $("#creatureInit");
     let hp_el = $("#creatureHP");
+    let ac_el = $("#creatureAC");
     if(state.edit.mode) {
-        state.creatures[editIndex].name = name_el.val();
-        state.creatures[editIndex].initiative = Number(initiative_el.val());
-        state.creatures[editIndex].maxhp = Number(hp_el.val());
-        state.creatures[editIndex].hp = Number(hp_el.val());
+        state.creatures[state.edit.index].name = name_el.val();
+        state.creatures[state.edit.index].initiative = Number(initiative_el.val());
+        state.creatures[state.edit.index].maxhp = Number(hp_el.val());
+        state.creatures[state.edit.index].hp = Number(hp_el.val());
+        state.creatures[state.edit.index].ac = Number(ac_el.val());
         state.edit.mode = false;
     } else {
         let creature = {
@@ -77,6 +79,7 @@ function addCreature() {
             initiative: Number(initiative_el.val()),
             maxhp: Number(hp_el.val()),
             hp: Number(hp_el.val()),
+            ac: Number(ac_el.val()),
             temphp: 0,
             status: {
                 blinded: false, 
@@ -180,6 +183,7 @@ function buildListItem(index) {
     var creatureInfo = $(`<div class='creatureInfo row'></div>`);
     creatureInfo.append(`<div><div class="title">INITIATIVE</div>${creature.initiative}</div>`);
     creatureInfo.append(`<div><div class="title">NAME</div><input id="name-${index}" class="name" value="${creature.name}" onchange="updateName(${index})"></div>`);
+    creatureInfo.append(`<div><div class="title">AC</div>${creature.ac}</div>`);
     var hp = $(`<div class="hp-container"><div class="title">HP <em class="temphp">(TEMP HP)</em></div></div>`);
     var hpArea = $(`<div id="hpArea-${index}" class='hpArea'><div id="hp-${index}" class="hp">${creature.hp}</div></div>`);
     hp.append(hpArea);
@@ -196,11 +200,10 @@ function buildListItem(index) {
                             <button id="toggle-status-${index}" class="btn toggle-status" title="Toggle Creature Status" onclick="toggleConditions(${index})"><img src="images/chevron-icon.svg" alt="Toggle Status" /></button>
                         </div>`);
     listItem.append(creatureInfo);
-
     var modHP = $(`<div id='modHP-${index}' class='modhp input-group'></div>`);
     modHP.append(`<input class="form-control" id='modHPValue-${index}' type='number'>`);
     modHP.append(`<input class="form-control" id='tempHPValue-${index}' type='number'>`);
-    modHP.append(`<div class='modHPOptions btn-group-vertical'><button class="heal btn btn-primary" onclick="modHP(${index}, 'heal')">+</button><button class="damage btn btn-secondary" onclick="modHP(${index}, 'damage')">-</button></div>`);
+    modHP.append(`<div class='modHPOptions btn-group'><button class="heal btn btn-primary" onclick="modHP(${index}, 'heal')">+</button><button class="damage btn btn-secondary" onclick="modHP(${index}, 'damage')">-</button></div>`);
     hpArea.append(modHP);
 
     var statusArea = $(`<div id='status-${index}' class='row statusArea' style="display: none;"></div>`);

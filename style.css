@@ -51,7 +51,7 @@ h1{
 
 .current {
     background: var(--bgcolor2);
-    border-radius: 10px;
+    border-radius: 0 0 10px 10px;
 }
 
 .current div {
@@ -226,6 +226,28 @@ input[type="number"]{
     gap: 1rem;
 }
 
+#inputContainer>div{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#inputContainer>div .input-group-text{
+    width: 100%;
+    border-top-right-radius: 0.375rem;
+    border-bottom-left-radius: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+#inputContainer>div .form-control{
+    width: 100%;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0.375rem;
+    margin: 0;
+    text-align: center;
+}
+
 #addCreature .btn-primary{
     background: var(--accent-blue);
     border: var(--bgcolor4);
@@ -332,20 +354,18 @@ input[type="number"]{
 }
 
 .modHPOptions .btn{
-    height: 1.1rem;
-    width: 20px;
-    display: inline-flex;
+    height: 2.3rem;
+    width: rem;
     border: none;
-    align-items: center;
-    justify-content: center;
 }
 
 .heal {
-    border-top-left-radius: 0;
     background: var(--accent-blue);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-.btn-group-vertical>.heal:hover{
+.modHPOptions>.heal:hover{
     background: var(--accent-blue2);
 }
 
@@ -354,7 +374,7 @@ input[type="number"]{
     background: var(--accent-blue);
 }
 
-.btn-group-vertical>.damage:hover{
+.modHPOptions>.damage:hover{
     background: var(--accent-blue2);
 }
 
@@ -493,6 +513,32 @@ input[type="number"]{
 
     .conditionArea{
         width: 80%;
+    }
+
+    .modHPOptions {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .modHPOptions .btn {
+        height: 1.12rem;
+        width: 20px;
+        display: inline-flex;
+        border: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modHPOptions button.heal{
+        border-top-right-radius: .375rem !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+
+    .modHPOptions button.damage{
+        border-top-right-radius: 0 !important;
+        margin-left: 0 !important;
     }
 }
 
