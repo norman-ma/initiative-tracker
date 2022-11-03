@@ -209,5 +209,5 @@ angular.module("inittrakrApp", ['ngCookies'])
             d.setTime(d.getTime() + (7*24*60*60*1000));
             $cookies.put("inittrakr", JSON.stringify($scope.state), {expires: d});
             $scope.sort();
-        });
+        }, true);
     }])
