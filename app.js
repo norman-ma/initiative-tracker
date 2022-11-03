@@ -114,6 +114,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             } else {
                 state.current = 0;
             }
+            $('html, body').animate({scrollTop: $(`#creature-${$scope.state.current}`).offset().top - ($('#current').height() + 35)});
         };
 
         $scope.duplicate = (index) => {
