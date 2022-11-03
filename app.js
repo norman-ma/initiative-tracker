@@ -71,7 +71,6 @@ angular.module("inittrakrApp", [])
                 $scope.state.creatures.push($scope.popup.creature);
             }
             $scope.popup.display = false;
-            $scope.sort();
         }
 
         $scope.toggleConditions = (index) => {
@@ -106,9 +105,7 @@ angular.module("inittrakrApp", [])
                 } else {
                     return 0
                 } 
-            })
-
-            $scope.setCookie();
+            });
         }
 
         $scope.next = () => {
@@ -121,12 +118,10 @@ angular.module("inittrakrApp", [])
 
         $scope.duplicate = (index) => {
             $scope.state.creatures.push(JSON.parse(JSON.stringify($scope.state.creatures[index])));
-            $scope.sort()
         };
 
         $scope.delete = (index) => {
             $scope.state.creatures.splice(index, 1);
-            $scope.sort()
         };
 
         $scope.reset = (index) => {
@@ -232,5 +227,8 @@ angular.module("inittrakrApp", [])
             current: 0
         };
 
-        $scope.sort();
+        $scope.$watch('state', function(){
+            $scope.setCookie();
+            $scope.sort();
+        }, true);
     }])
