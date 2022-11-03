@@ -1,5 +1,5 @@
-angular.module("inittrakrApp", [])
-    .controller('AppController', [ '$scope', '$window', function($scope, $window){
+angular.module("inittrakrApp", ['ngCookies'])
+    .controller('AppController', [ '$scope', '$cookies', function($scope, $cookies){
         console.log($scope.state)
         $scope.popup = {
             display: false,
@@ -159,29 +159,6 @@ angular.module("inittrakrApp", [])
             }
         }
 
-        $scope.setCookie = () => {
-            let val = JSON.stringify($scope.state);
-            let d = new Date()
-            d.setTime(d.getTime() + (7*24*60*60*1000));
-        
-            document.cookie = "inittrakr=" + val + ";expires=" + d.toUTCString() + ";path=/";
-            return(document.cookie);
-        };
-
-        $scope.getCookie = () => {
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let cookies = decodedCookie.split(";");
-            for(let cookie of cookies) {
-                while (cookie.charAt(0) == ' ') {
-                    cookie = cookie.substring(1);
-                }
-                if (cookie.indexOf('inittrakr=') == 0) {
-                    return JSON.parse(cookie.split('=')[1]);
-                }
-            }
-            return false;
-        };
-
         $scope.toggleAll = (toggle) => {
             for(let creature of $scope.state.creatures){
                 creature.displayConditions = toggle;
@@ -222,13 +199,15 @@ angular.module("inittrakrApp", [])
             creature.modhp.temphp = 0;
         }
 
-        $scope.state = $scope.getCookie() ? $scope.getCookie() : {
+        $scope.state = $cookies.get('inittrakr') ? $cookies.get('inittrakr') : {
             creatures: [],
             current: 0
         };
 
         $scope.$watch('state', function(){
-            $scope.setCookie();
+            let d = new Date();
+            d.setTime(d.getTime() + (7*24*60*60*1000));
+            $cookies.put("inittrakr", JSON.stringify($scope.state), {expires: d.toUTCString()});
             $scope.sort();
         }, true);
     }])
