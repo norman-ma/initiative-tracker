@@ -53,7 +53,6 @@ angular.module("inittrakrApp", ['ngCookies'])
         }
     })
     .controller('AppController', [ '$scope', '$cookies', function($scope, $cookies){
-        console.log($scope.state)
         $scope.popup = {
             display: false,
             creature: null,
@@ -104,7 +103,6 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
             $scope.popup.buttonText = "Add";
             $scope.popup.display = !$scope.popup.display;
-            console.log($scope.popup)
         }
 
         $scope.toggleEdit = (index) => {
@@ -253,10 +251,10 @@ angular.module("inittrakrApp", ['ngCookies'])
             creature.modhp.temphp = 0;
         }
 
-        $scope.state = $cookies.get('inittrakr') ? JSON.parse($cookies.get('inittrakr')) : {
+        $scope.state = $cookies.get('inittrakr') ? JSON.parse($cookies.get('inittrakr')) : JSON.stringify({
             creatures: [],
             current: 0
-        };
+        });
 
         $scope.$watch('state', function(){
             let d = new Date();
