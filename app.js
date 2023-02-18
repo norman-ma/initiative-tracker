@@ -251,10 +251,10 @@ angular.module("inittrakrApp", ['ngCookies'])
             creature.modhp.temphp = 0;
         }
 
-        $scope.state = $cookies.get('inittrakr') ? JSON.parse($cookies.get('inittrakr')) : JSON.stringify({
+        $scope.state = $cookies.get('inittrakr') ? JSON.parse($cookies.get('inittrakr')) : {
             creatures: [],
             current: 0
-        });
+        };
 
         $scope.$watch('state', function(){
             let d = new Date();
