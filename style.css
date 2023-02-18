@@ -306,7 +306,7 @@ input[type="number"]{
 
 .creatureInfo>div{
     border-left: 1px solid var(--bgcolor4);
-    width: auto;
+    width: 8em;
     height: 3.5rem;
 }
 
@@ -372,7 +372,7 @@ input[type="number"]{
 .modhp{
     display: flex;
     flex-wrap: wrap;
-    width: 9em;
+    width: 12em;
     align-items: center;
 }
 
