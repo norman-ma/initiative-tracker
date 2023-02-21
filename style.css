@@ -288,6 +288,10 @@ input[type="number"]{
     width: 80px;
 }
 
+#profileMgr {
+    width: 35rem;
+}
+
 #profileMgr .btn-link{
     text-decoration: none;
     font-size: 0.7em;
@@ -331,10 +335,33 @@ input[type="number"]{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    height: 20em;
+    padding: 0.1em;
+}
+
+#nameList {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x:hidden;
+    cursor: default;
 }
 
 .preview {
-    font-size: 0.8em;
+    font-size: 0.7em;
+    width: 60%;
+    background:  var(--bgcolor1);
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0 1rem 1rem 0;
+    cursor: default;
+}
+
+.preview h3{
+    font-size: 1.8em;
+    font-weight: bolder;
+    color: var(--bgcolor5);
+    border-bottom: solid 1px var(--bgcolor5)
 }
 
 .preview .creature-name {
