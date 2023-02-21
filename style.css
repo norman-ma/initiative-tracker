@@ -293,6 +293,15 @@ input[type="number"]{
     font-size: 0.7em;
     font-weight: bolder;
 }
+
+#profileMgr .btn-primary{
+    width: 4em;
+}
+
+#profileMgr .input-group{
+    align-items:center;
+}
+
 #profileMgr .btn-link:hover{
     text-decoration: underline;
 }
@@ -324,6 +333,12 @@ input[type="number"]{
 
 .preview .creature-name {
     font-weight: bolder;
+}
+
+#profileMgrClose {
+    position: absolute;
+    right: 1em;
+    top: 1em;
 }
 
 #list {
