@@ -269,6 +269,12 @@ angular.module("inittrakrApp", ['ngCookies'])
             } else {
                 $scope.profileMgr.toggled = !$scope.profileMgr.toggled;
             }
+            if(!$scope.profileMgr.toggled){
+                $scope.profileMgr.current = null;
+            }
+        }
+        $scope.setCurrentProfile = (profile) => {
+            $scope.profileMgr.current = profile;
         }
         $scope.saveProfile = () => {
             let cookieName = `inittrakr-${$scope.profileMgr.name}`;
