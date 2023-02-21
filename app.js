@@ -389,4 +389,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
         };
         $scope.buildProfileList();
+
+        $scope.$watch('state', $scope.sort, true);
     }])
+    
