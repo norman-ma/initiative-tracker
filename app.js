@@ -362,13 +362,13 @@ angular.module("inittrakrApp", ['ngCookies'])
             $cookies.put(cookieName, JSON.stringify(compress($scope.state)), {expires: d});
             $scope.profileName = "";
             $scope.buildProfileList();
-            $scope.profileMgr.toggle = false;
+            $scope.profileMgr.toggled = false;
         };
         $scope.loadProfile = (index) => {
             let profile = $scope.profileMgr.profileList[index];
-            $scope.state = profile.value;
+            $scope.state = JSON.parse(JSON.stringify(profile.value));
             $scope.profileMgr.name = profile.name;
-            $scope.profileMgr.toggle = false;
+            $scope.profileMgr.toggled = false;
         };
         $scope.deleteProfile = (index) => {
             let profile = $scope.profileMgr.profileList[index];
