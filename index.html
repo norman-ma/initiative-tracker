@@ -72,7 +72,7 @@
                 <div id="profileMgr" ng-if="profileMgr.toggled">
                     <button id="profileMgrClose" class="btn btn-link delete" ng-click="toggleProfileMgr()">Close</button>
                     <div class="titleContainer"><h2>Profile Manager</h2></div>
-                    <div class="input-group mb-3">
+                    <div id="saveProfile" class="input-group mb-3">
                         <span class="input-group-text">Name</span>
                         <input id="profileName" class="form-control" type="text" ng-model="profileMgr.name"/>
                         <button id="saveProfileButton" class="input-group-text btn btn-primary" ng-click="saveProfile()">Save</button>

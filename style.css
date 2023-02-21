@@ -313,6 +313,12 @@ input[type="number"]{
     color: var(--bgcolor5);
 }
 
+#saveProfile {
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: solid 1px var(--bgcolor3);
+}
+
 .profile {
     width: 10em;
     display: flex;
