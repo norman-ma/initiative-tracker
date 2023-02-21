@@ -199,7 +199,7 @@ img.rotate-right{
     background: var(--accent-blue2);
 }
 
-#addCreature{
+#creatureMgr, #profileMgr{
     position: absolute;
     width: 30rem;
     max-width: 100%;
@@ -213,7 +213,7 @@ img.rotate-right{
     background: var(--bgcolor2);
 }
 
-#addCreature .titleContainer {
+#creatureMgr .titleContainer, #profileMgr .titleContainer{
     width: 100%;
     text-align: center;
 }
@@ -225,19 +225,19 @@ input[type="number"]{
     border: var(--bgcolor3) 1px solid;
 }
 
-#addCreature input[type="text"]:focus , input[type="number"]:focus {
+#creatureMgr input[type="text"]:focus, input[type="number"]:focus, #profileMgr input[type="text"]:focus{
     background: var(--bgcolor4);
     color: inherit;
     border: var(--bgcolor3) 1px solid;
 }
 
-#addCreature .input-group-text{
+#creatureMgr .input-group-text, #profileMgr .input-group-text{
     background: var(--bgcolor3);
     color: inherit;
     border: var(--bgcolor2);
 }
 
-#addCreature .btnContainer{
+#creatureMgr .btnContainer{
     display: flex;
     justify-content: center;
     width: 100%;
@@ -270,18 +270,18 @@ input[type="number"]{
     text-align: center;
 }
 
-#addCreature .btn-primary{
+#creatureMgr .btn-primary, #profileMgr .btn-primary{
     background: var(--accent-blue);
     border: var(--bgcolor4);
     color: inherit;
     width: 80px;
 }
 
-#addCreature .btn-primary:hover{
+#creatureMgr .btn-primary:hover, #profileMgr .btn-primary:hover{
     background: var(--accent-blue2);
 }
 
-#addCreature .btn-secondary{
+#creatureMgr .btn-secondary, #profileMgr .btn-secondary{
     background: var(--bgcolor3);
     border: var(--bgcolor4);
     color: inherit;

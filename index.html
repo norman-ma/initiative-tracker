@@ -37,13 +37,14 @@
             <div class="container-fluid body">
                 <div id="toggleAddCreatureBtn">
                     <button ng-click="toggleAdd()" class="btn btn-primary" title="Add Creature">+</button>
+                    <div id="save-load" class="btn btn-link" ng-click="toggleProfileMgr(true)">Save/Load</div>
                     <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)">Clear All</div>
                     <div id="untoggle-all" class="btn btn-link" ng-click="toggleAll(false)">Untoggle All</div>
                     <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)">Toggle All</div>
                     <div id="clear-all" class="btn btn-link" ng-if="state.creatures.length > 0">{{state.creatures.length}}</div>
                 </div>
                 
-                <div id="addCreature" ng-if="popup.display">
+                <div id="creatureMgr" ng-if="popup.display">
                     <div class="titleContainer"><h2>Add Creature</h2></div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Name</span>
@@ -66,6 +67,35 @@
                     <div class="btnContainer btn-group">
                         <button id="addCreatureBtn" class="btn btn-primary" ng-click="popupSubmit()">{{popup.buttonText}}</button>
                         <button class="btn btn-secondary" ng-click="toggleAdd()" >Cancel</button>
+                    </div>
+                </div>
+                <div id="profileMgr" ng-if="profileMgr.toggled">
+                    <div class="titleContainer"><h2>Profile Manager</h2></div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Name</span>
+                        <input id="profileName" class="form-control" type="text" ng-model="profileMgr.name"/>
+                    </div>
+                    <div id="profileList">
+                        <div id="nameList">
+                            <div ng-repeat="profile in profileMgr.profileList track by $index">
+                                <div class="profile">
+                                    <span class="profileName" ng-click="profileMgr.current = profile">{{profile.name}}</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary" ng-click="load($index)">Load</button>
+                                        <button class="btn btn-secondary" ng-click="delete($index)">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview" ng-show="profileMgr.current">
+                            <div ng-repeat="creature in profileMgr.current.creatures">
+                                <span>{{creature.name}} | HP: {{creature.hp}}/{{creature.maxhp}} | AC {{creature.ac}}</span>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="btnContainer btn-group">
+                        <button id="saveProfileButton" class="btn btn-primary" ng-click="saveProfile()">Save</button>
+                        <button class="btn btn-secondary" ng-click="toggleProfileMgr()">Cancel</button>
                     </div>
                 </div>
                 <div id="alert" class="popup" ng-if="alert.display">

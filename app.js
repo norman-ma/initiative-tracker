@@ -132,6 +132,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             $scope.alert.display = display;
             if(display) {
                 $scope.alert.message = message;
+                $('html, body').animate({scrollTop: $(`#alert`).offset().top - ($('#current').height() + 35)});
             }
         }
 
@@ -249,18 +250,59 @@ angular.module("inittrakrApp", ['ngCookies'])
 
             creature.modhp.hp = 0;
             creature.modhp.temphp = 0;
-        }
+        };
 
         $scope.state = $cookies.get('inittrakr') ? JSON.parse($cookies.get('inittrakr')) : {
             creatures: [],
             current: 0
         };
 
-        $scope.$watch('state', function(){
+        $scope.profileMgr = {
+            toggled: false,
+            name: "",
+            profileList: [],
+            current: null
+        };
+        $scope.toggleProfileMgr = (val) => {
+            if(val){
+                $scope.profileMgr.toggled = val;
+            } else {
+                $scope.profileMgr.toggled = !$scope.profileMgr.toggled;
+            }
+        }
+        $scope.saveProfile = () => {
+            let cookieName = `inittrakr-${$scope.profileMgr.name}`;
             let d = new Date();
             d.setTime(d.getTime() + (7*24*60*60*1000));
-            $cookies.remove("inittrakr");
-            $cookies.put("inittrakr", JSON.stringify($scope.state), {expires: d});
-            $scope.sort();
-        }, true);
+            $cookies.remove(cookieName);
+            $cookies.put(cookieName, JSON.stringify($scope.state), {expires: d});
+            $scope.profileName = "";
+            $scope.buildProfileList();
+            $scope.profileMgr.toggle = false;
+        };
+        $scope.loadProfile = (index) => {
+            let profile = $scope.profileMgr.profileList[index];
+            $scope.state = profile.value;
+            $scope.profileMgr.name = profile.name;
+            $scope.profileMgr.toggle = false;
+        };
+        $scope.deleteProfile = (index) => {
+            let profile = $scope.profileMgr.profileList[index];
+            $cookies.remove(`inittrakr-${profile.name}`);
+            $scope.buildProfileList();
+        };
+
+        $scope.buildProfileList = () => {
+            var list = $cookies.getAll();
+            $scope.profileList = [];
+            for(let key of Object.keys(list)){
+                if(key.indexOf('inittrakr') == 0 && key.length > 10){
+                    profileList.push({
+                        name: key.substring(10),
+                        value: JSON.parse($cookies.get(key))
+                    });
+                }
+            }
+        };
+        $scope.buildProfileList();
     }])
