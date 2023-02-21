@@ -297,7 +297,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             $scope.profileList = [];
             for(let key of Object.keys(list)){
                 if(key.indexOf('inittrakr') == 0 && key.length > 10){
-                    profileList.push({
+                    $scope.profileMgr.profileList.push({
                         name: key.substring(10),
                         value: JSON.parse($cookies.get(key))
                     });
