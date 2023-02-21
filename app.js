@@ -53,6 +53,12 @@ angular.module("inittrakrApp", ['ngCookies'])
         }
     })
     .controller('AppController', [ '$scope', '$cookies', function($scope, $cookies){
+
+        $scope.status = {
+            creatures: [],
+            current: 0
+        };
+
         $scope.popup = {
             display: false,
             creature: null,
@@ -61,12 +67,12 @@ angular.module("inittrakrApp", ['ngCookies'])
                 status: false,
                 index: 0
             }
-        }
+        };
 
         $scope.alert = {
             display: false,
             message: ""
-        }
+        };
 
         $scope.toggleAdd = () => {
             $scope.popup.creature = {
