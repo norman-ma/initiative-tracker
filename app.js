@@ -264,6 +264,83 @@ angular.module("inittrakrApp", ['ngCookies'])
             profileList: [],
             current: null
         };
+
+        let compress = (state) => {
+            let tiny = {
+                creatures: [],
+                current: state.current
+            };
+
+            for(let creature of state.creatures){
+                let critter=[];
+                critter.push(creature.name);
+                critter.push(creature.initiative);
+                critter.push(creature.maxhp);
+                critter.push(creature.hp);
+                critter.push(creature.ac);
+                critter.push(creature.temphp);
+                let stat_list = []
+                for(s of Object.keys(creature.status)){
+                    if(creature.status[s]){
+                        stat_list.push(s);
+                    }
+                }
+                critter.push(stat_list);
+                critter.push(creature.exhaustion);
+                tiny.creatures.push(critter);
+            }
+
+            return tiny;
+        };
+
+        let decompress = (tiny) => {
+            let state = {
+                creatures: [],
+                current: tiny.current
+            };
+
+            for(let critter of tiny.creatures) {
+                let creature = {
+                    name: critter[0],
+                    initiative: critter[1],
+                    maxhp: critter[2],
+                    hp: critter[3],
+                    ac: critter[4],
+                    temphp: critter[5],
+                    modhp: {
+                        hp: 0,
+                        temphp: 0
+                    },
+                    status: {
+                        blinded: false, 
+                        charmed: false, 
+                        deafened: false, 
+                        frightened: false, 
+                        grappled: false, 
+                        incapacitated: false, 
+                        invisible: false, 
+                        paralyzed: false, 
+                        petrified: false, 
+                        poisoned: false, 
+                        prone: false, 
+                        restrained: false, 
+                        stunned: false, 
+                        unconscious: false, 
+                        concentrating: false
+                    },
+                    exhaustion: critter[7],
+                    isDead: false,
+                    displayConditions: false
+                };
+                for(s of critter[6]){
+                    creature.status[s] = true;
+                };
+                state.creatures.push(creature);
+            }
+
+            return state;
+        }
+
         $scope.toggleProfileMgr = (val) => {
             if(val){
                 $scope.profileMgr.toggled = val;
@@ -282,7 +359,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             let d = new Date();
             d.setTime(d.getTime() + (7*24*60*60*1000));
             $cookies.remove(cookieName);
-            $cookies.put(cookieName, JSON.stringify($scope.state), {expires: d});
+            $cookies.put(cookieName, JSON.stringify(compress($scope.state)), {expires: d});
             $scope.profileName = "";
             $scope.buildProfileList();
             $scope.profileMgr.toggle = false;
@@ -306,7 +383,7 @@ angular.module("inittrakrApp", ['ngCookies'])
                 if(key.indexOf('inittrakr') == 0 && key.length > 10){
                     $scope.profileMgr.profileList.push({
                         name: key.substring(10),
-                        value: JSON.parse($cookies.get(key))
+                        value: decompress(JSON.parse($cookies.get(key)))
                     });
                 }
             }
