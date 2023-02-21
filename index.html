@@ -91,7 +91,7 @@
                         </div>
                         <div class="preview">
                             <h3>{{profileMgr.current.name}}</h3>
-                            <div ng-repeat="creature in profileMgr.current.value.creatures">
+                            <div ng-repeat="creature in profileMgr.current.value.creatures track by $index">
                                 <span class="creature-name">{{creature.name}}</span> (HP: {{creature.hp}}/{{creature.maxhp}}, AC: {{creature.ac}}, Initiative: {{creature.initiative}})
                             </div>
                         </div>
