@@ -312,6 +312,16 @@ input[type="number"]{
     justify-content: space-between;
 }
 
+#profileList {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.preview {
+    font-size: 0.8em;
+}
+
 #list {
     padding: 0;
 }
