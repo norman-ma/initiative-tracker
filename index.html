@@ -78,8 +78,8 @@
                     <div id="profileList">
                         <div id="nameList">
                             <div ng-repeat="profile in profileMgr.profileList track by $index">
-                                <div class="profile">
-                                    <span class="profileName" ng-mouseover="setCurrentProfile(profile)">{{profile.name}}</span>
+                                <div class="profile" ng-mouseover="setCurrentProfile(profile)">
+                                    <span class="profileName">{{profile.name}}</span>
                                     <div class="btn-group">
                                         <button class="btn btn-link" ng-click="loadProfile($index)">Load</button>
                                         <button class="btn btn-link" ng-click="deleteProfile($index)">Delete</button>
