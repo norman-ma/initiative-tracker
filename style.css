@@ -322,6 +322,10 @@ input[type="number"]{
     font-size: 0.8em;
 }
 
+.preview .creature-name {
+    font-weight: bolder;
+}
+
 #list {
     padding: 0;
 }
