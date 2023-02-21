@@ -54,7 +54,7 @@ angular.module("inittrakrApp", ['ngCookies'])
     })
     .controller('AppController', [ '$scope', '$cookies', function($scope, $cookies){
 
-        $scope.status = {
+        $scope.state = {
             creatures: [],
             current: 0
         };
