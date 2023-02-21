@@ -112,8 +112,8 @@ angular.module("inittrakrApp", ['ngCookies'])
         }
 
         $scope.toggleEdit = (index) => {
-            $scope.popup.creature = $scope.state.creatures[index]
-            $scope.popup.buttonText = "Edit"
+            $scope.popup.creature = JSON.parse(JSON.stringify($scope.state.creatures[index]));
+            $scope.popup.buttonText = "Edit";
             $scope.popup.display = !$scope.popup.display;
             $scope.popup.edit.status = true;
             $scope.popup.edit.index = index;
@@ -389,7 +389,6 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
         };
         $scope.buildProfileList();
-
         $scope.$watch('state', $scope.sort, true);
     }])
     
