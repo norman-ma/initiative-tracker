@@ -288,6 +288,30 @@ input[type="number"]{
     width: 80px;
 }
 
+#profileMgr .btn-link{
+    text-decoration: none;
+    font-size: 0.7em;
+    font-weight: bolder;
+}
+#profileMgr .btn-link:hover{
+    text-decoration: underline;
+}
+
+#profileMgr .btn-link.load{
+    color: var(--accent-blue);
+}
+#profileMgr .btn-link.delete{
+    color: var(--bgcolor5);
+}
+
+.profile {
+    width: 10em;
+    display: flex;
+    align-items:center;
+    border-bottom: solid 1px var(--bgcolor4);
+    justify-content: space-between;
+}
+
 #list {
     padding: 0;
 }

@@ -88,9 +88,9 @@
                             </div>
                         </div>
                         <div class="preview">
-                            <div ng-repeat="creature in profileMgr.current.creatures">
+                            <div ng-repeat="creature in profileMgr.current.value.creatures">
                                 <span>{{creature.name}} | HP: {{creature.hp}}/{{creature.maxhp}} | AC {{creature.ac}}</span>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <div class="btnContainer btn-group">
