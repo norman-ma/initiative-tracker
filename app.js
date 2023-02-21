@@ -387,6 +387,9 @@ angular.module("inittrakrApp", ['ngCookies'])
                     });
                 }
             }
+            if($scope.profileMgr.profileList.length == 0) {
+                $scope.profileMgr.current = null;
+            }
         };
         $scope.buildProfileList();
         $scope.$watch('state', $scope.sort, true);
