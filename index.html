@@ -57,7 +57,7 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">HP</span>
-                            <input id="creatureHP" class="form-control" type="number" min="1" ng-model="popup.creature.maxhp"/>
+                            <input id="creatureHP" class="form-control" type="text" ng-model="popup.creature.maxhp" placeholder="HP/HitDice"/>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">AC</span>
@@ -98,7 +98,8 @@
                     </div>
                 </div>
                 <div id="alert" class="popup" ng-if="alert.display">
-                    <div>{{alert.message}}</div>
+                    <h3>{{alert.title}}</h3>
+                    <div class="contents">{{alert.message}}</div>
                     <div><button class="btn" ng-click="toggleAlert(false)">OK</button></div>
                 </div>
                 <div id="list" class="container-fluid">

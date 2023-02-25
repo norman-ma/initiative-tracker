@@ -199,6 +199,25 @@ img.rotate-right{
     background: var(--accent-blue2);
 }
 
+#alert {
+    flex-direction: column;
+    width: 30rem;
+}
+
+#alert h3{
+    width: 100%;
+    font-size: 1em;
+    color: var(--bgcolor4);
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--bgcolor4);
+    padding-bottom: 1em;
+}
+
+#alert .contents{
+    width: 100%;
+}
+
 #creatureMgr, #profileMgr{
     position: absolute;
     width: 30rem;

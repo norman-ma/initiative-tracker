@@ -71,6 +71,7 @@ angular.module("inittrakrApp", ['ngCookies'])
 
         $scope.alert = {
             display: false,
+            title: "",
             message: ""
         };
 
@@ -78,7 +79,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             $scope.popup.creature = {
                 name: "",
                 initiative: 0,
-                maxhp: 0,
+                maxhp: "",
                 hp: 0,
                 ac: 0,
                 temphp: 0,
@@ -109,7 +110,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
             $scope.popup.buttonText = "Add";
             $scope.popup.display = !$scope.popup.display;
-        }
+        };
 
         $scope.toggleEdit = (index) => {
             $scope.popup.creature = JSON.parse(JSON.stringify($scope.state.creatures[index]));
@@ -117,30 +118,85 @@ angular.module("inittrakrApp", ['ngCookies'])
             $scope.popup.display = !$scope.popup.display;
             $scope.popup.edit.status = true;
             $scope.popup.edit.index = index;
-        }
+        };
 
         $scope.popupSubmit = () => {
+            let text = $scope.popup.creature.maxhp.toUpperCase();
+            let regex_dice = new RegExp('^\\d+(D|d)\\d+(\\+\\d+)?\\*?$');
+            let regex_num = new RegExp('^\\d+$');
+            if(regex_dice.test(text)){
+                let roll = {
+                    num: parseInt(text.slice(0, text.indexOf('D'))),
+                    dice: text.indexOf('+') >= 0 ? parseInt(text.slice(text.indexOf('D') + 1, text.indexOf('+'))) : parseInt(text.slice(text.indexOf('D') + 1, 0)),
+                    bonus: text.indexOf('+') >= 0 ? parseInt(text.slice(text.indexOf('+') + 1)) : 0,
+                    avg: text.indexOf('*') >= 0
+                }
+                let val = $scope.rollDice(roll.num, roll.dice, roll.bonus, roll.avg);
+                if(val){
+                    $scope.popup.creature.maxhp = val;
+                } else {
+                    return;
+                }
+            } else if(regex_num.test(text)) {
+                $scope.popup.creature.maxhp = parseInt($scope.popup.creature.maxhp)
+            } else {
+                $scope.toggleAlert(true, "Incorrect HP Format", "Please enter either a number or hit dice eg. 10d8+30. If you use the hit dice format you can add an * at the end to use the average.");
+                return;
+            }
             $scope.popup.creature.hp = $scope.popup.creature.maxhp;
+
             if($scope.popup.edit.status) {
+                $scope.popup.creature.hp = $scope.popup.creature.maxhp;
                 $scope.state.creatures[$scope.popup.edit.index] = $scope.popup.creature;
                 $scope.popup.edit.status = false;
             } else {
                 $scope.state.creatures.push($scope.popup.creature);
             }
             $scope.popup.display = false;
-        }
+        };
+
+        $scope.rollDice = (num, dice, bonus, average=false) => {
+            if(![4, 6, 8, 10, 12, 20].includes(dice)) {
+                $scope.toggleAlert(true, "Invalid Die", "Die value must be 4, 6, 8, 10, 12 or 20");
+                return false;
+            }
+            let result = 0;
+            list = [];
+            if (average) {
+                let avgVal = (dice + 1) / 2
+                result = Math.floor(avgVal * num);
+            } else {
+                for(let i = 0; i < num; i++) {
+                    diceVal = Math.ceil(Math.random() * dice);
+                    list.push(diceVal);
+                    result += diceVal;
+                }
+            }
+            console.log(`${num}D${dice}+${bonus}${average ? '*' : ''}`, `(${result+bonus})`, list);
+            return result + bonus;
+        };
 
         $scope.toggleConditions = (index) => {
             $scope.state.creatures[index].displayConditions = !$scope.state.creatures[index].displayConditions;
-        }
+        };
 
-        $scope.toggleAlert = (display, message) => {
+        $scope.toggleAlert = (display, title, message) => {
             $scope.alert.display = display;
             if(display) {
+                $scope.alert.title = title;
                 $scope.alert.message = message;
-                $('html, body').animate({scrollTop: $(`#alert`).offset().top - ($('#current').height() + 35)});
             }
-        }
+        };
+
+        $scope.scrollToCurrent = () => {
+            $('html, body').animate({scrollTop: $(`#creature-${$scope.state.current}`).offset().top - ($('#current').height() + 35)});
+        };
+
+        $scope.$watch(function() { return $scope.alert.display && $('#alert').is(':visible') }, function() {
+            if($('#alert').is(':visible')){
+                $('html, body').animate({scrollTop: $('#alert').offset().top - ($('#current').height() + 35)});
+            }
+        });
 
         $scope.clearAll = () => {
             $scope.state.creatures = [];
@@ -149,13 +205,10 @@ angular.module("inittrakrApp", ['ngCookies'])
         $scope.sort = () => {
             $scope.state.creatures.sort(function(a, b) {
                 if (a.initiative == b.initiative) {
-                    if (a.name < b.name) {
-                        return -1;
-                    } else if(a.name > b.name) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return a.name.localeCompare(b.name, undefined, {
+                        numeric: true,
+                        sensitivity: 'base'
+                    });
                 } else if (a.initiative > b.initiative) {
                     return -1;
                 } else if(a.initiative < b.initiative) {
@@ -172,11 +225,23 @@ angular.module("inittrakrApp", ['ngCookies'])
             } else {
                 state.current = 0;
             }
-            $('html, body').animate({scrollTop: $(`#creature-${$scope.state.current}`).offset().top - ($('#current').height() + 35)});
+            $scope.scrollToCurrent();
         };
 
         $scope.duplicate = (index) => {
-            $scope.state.creatures.push(JSON.parse(JSON.stringify($scope.state.creatures[index])));
+            let regex_count = new RegExp('\\(\\d+\\)$');
+            let newCreature = JSON.parse(JSON.stringify($scope.state.creatures[index]))
+            if(regex_count.test(newCreature.name)) {
+                var index = newCreature.name.match(regex_count).index;
+                var nameStr = newCreature.name.slice(0, index);
+                var countStr = newCreature.name.slice(index + 1);
+                var count = parseInt(countStr);
+                var new_name = `${nameStr}(${count + 1})`;
+                newCreature.name = new_name
+            } else {
+                newCreature.name = `${newCreature.name}(2)`
+            }
+            $scope.state.creatures.push(newCreature);
         };
 
         $scope.delete = (index) => {
@@ -241,10 +306,10 @@ angular.module("inittrakrApp", ['ngCookies'])
                 creature.hp = creature.hp - hp;
                 if(hp > 0 && creature.status.concentrating) {
                     let dc = (hp / 2) > 10 ? Math.round(hp / 2) : 10
-                    $scope.toggleAlert(true,`Concentration Save. DC(${dc})`);
+                    $scope.toggleAlert(true, 'Concentration', `Concentration Save. DC(${dc})`);
                 }
                 if(creature.maxhp > 0 && creature.hp <= 0) {
-                    $scope.toggleAlert(true,`${creature.name} is dead`);
+                    $scope.toggleAlert(true,'Creature Death', `${creature.name} is dead`);
                     $scope.delete(index);
                 }
             } else if (type == 'heal') {
