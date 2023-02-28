@@ -649,15 +649,15 @@ angular.module("inittrakrApp", ['ngCookies'])
                 critter.push(creature.ac);
                 critter.push(creature.temphp);
                 let bool = []
-                for(s of Object.keys(creature.status.bool)){
-                    if(creature.status[s]){
+                for(let s of Object.keys(creature.status.bool)){
+                    if(creature.status.bool[s]){
                         bool.push(s);
                     }
                 }
                 critter.push(bool);
                 let num = []
-                for(s of Object.keys(creature.status.num)){
-                    if(creature.status[s] > 0){
+                for(let s of Object.keys(creature.status.num)){
+                    if(creature.status.num[s] > 0){
                         num.push([s, creature.status[s]]);
                     }
                 }
@@ -724,7 +724,6 @@ angular.module("inittrakrApp", ['ngCookies'])
                 for(s of critter[8]){
                     creature.status.bool[s[0]] = s[1];
                 };
-                state.creatures.push(creature);
                 if(creature.mode == "pf2e") {
                     creature.dc.ac.base = critter[10];
                     creature.dc.ac.val = critter[10];
@@ -737,6 +736,9 @@ angular.module("inittrakrApp", ['ngCookies'])
                     creature.dc.actions.base = critter[14];
                     creature.dc.actions.val = critter[14];
                 }
+
+                
+                state.creatures.push(creature);
             }
 
             for(let i = 0; i < tiny.settings.length; i++){
