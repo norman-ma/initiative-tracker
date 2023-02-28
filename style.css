@@ -485,13 +485,13 @@ input[type="number"]{
 
 .creatureInfo {
     font-size: 2em;
-    padding: 0.5rem 0;
+    padding: 0.5rem 0 0 0;
     justify-content: space-between;
 }
 
 .creatureInfo>div{
     border-left: 1px solid var(--bgcolor4);
-    height: 3.5rem;
+    height: 3.5em;
     width: auto;
 }
 
@@ -507,11 +507,12 @@ input[type="number"]{
 }
 
 .creatureInfo .options{
-    width: 100%;
+    width: 100% !important;
     display: flex;
     justify-content: space-between;
-    padding: 0 0.5em;
-    padding-top: 0.5rem;
+    border: none;
+    background: var(--bgcolor2);
+    align-items: center;
 }
 
 .creatureInfo .btn{
@@ -625,7 +626,8 @@ input[type="number"]{
 
 .statusArea{
     padding: 1em;
-    border-top: var(--bgcolor4) solid 1px;
+    /* border-top: var(--bgcolor4) solid 1px; */
+    background: var(--bgcolor2);
     gap: 1em;
 }
 
@@ -677,7 +679,7 @@ input[type="number"]{
 
 .condition .form-control,
 .condition .input-group-text{
-    background: var(--bgcolor2);
+    background: var(--bgcolor3);
     color: inherit;
     border: none;
     cursor: default;

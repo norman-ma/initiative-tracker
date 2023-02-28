@@ -780,6 +780,9 @@ angular.module("inittrakrApp", ['ngCookies'])
             $scope.settingMgr.settings = copy(profile.value.settings);
             $scope.profileMgr.name = profile.name;
             $scope.profileMgr.toggled = false;
+            for(let i = 0; i < $scope.state.creatures.length; i++) {
+                $scope.updateCondition(i);
+            }
         };
         $scope.deleteProfile = (index) => {
             let profile = $scope.profileMgr.profileList[index];
