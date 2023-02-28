@@ -25,19 +25,26 @@
             <div id="current" class="container-fluid current" ng-if="state.creatures.length > 0">
                 <div id="current-creature" class="row">
                     <div class="col-md-2"><div class="title">INITIATIVE</div><div id="current-initiative">{{state.creatures[state.current].initiative}}</div></div>
-                    <div class="col-md-6"><div class="title">NAME</div><div id="current-name">{{state.creatures[state.current].name}}</div></div>
+                    <div class="col-md-4"><div class="title">NAME</div><div id="current-name">{{state.creatures[state.current].name}}</div></div>
                     <div class="col-md-2"><div class="title">HP</div><div id="current-hp">{{state.creatures[state.current].hp}} <em class="temphp" ng-if="state.creatures[state.current].temphp > 0">({{state.creatures[state.current].temphp}})</em></div></div>
+                    <div id="currentDC" class="col-md-2" ng-if="state.creatures[state.current].dc">
+                        <div><span class="name">Fort DC: </span><span class="value">{{state.creatures[state.current].dc.fortDC.val}}</span></div>
+                        <div><span class="name">Reflex DC: </span><span class="value">{{state.creatures[state.current].dc.reflexDC.val}}</span></div>
+                        <div><span class="name">Will DC: </span><span class="value">{{state.creatures[state.current].dc.willDC.val}}</span></div>
+                        <div><span class="name">Actions: </span><span class="value">{{state.creatures[state.current].dc.actions.val}}</span></div>
+                    </div>
                     <div class="col-md-2 next"><button class="btn btn-primary" ng-click="next()"><img class="rotate-right" src="images/chevron-icon.svg" alt=""></button></div>
                 </div>
                 <div id="current-status">
-                    <div class="current-condition" ng-if="state.creatures[state.current].exhaustion > 0"><div class="title">EXHAUSTION</div><div class="value">{{state.creatures[state.current].exhaustion}}</div></div>
-                    <div class="current-condition" ng-if="value" ng-repeat="(condition, value) in state.creatures[state.current].status">{{condition.toUpperCase()}}</div>
+                    <div class="current-condition" ng-if="value" ng-repeat="(condition, value) in state.creatures[state.current].status.bool" ng-attr-title="{{describe(condition)}}">{{condition.toUpperCase()}}</div>
+                    <div class="current-condition" ng-if="value" ng-repeat="(condition, value) in state.creatures[state.current].status.num" ng-attr-title="{{describe(condition)}}">{{condition.toUpperCase()}}:{{value}}</div>
                 </div>
             </div>
             <div class="container-fluid body">
                 <div id="toggleAddCreatureBtn">
                     <button ng-click="toggleAdd()" class="btn btn-primary" title="Add Creature">+</button>
                     <div id="save-load" class="btn btn-link" ng-click="toggleProfileMgr(true)">Save/Load</div>
+                    <div id="settings" class="btn btn-link" ng-click="toggleSettingMgr(true)">Settings</div>
                     <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)">Clear All</div>
                     <div id="untoggle-all" class="btn btn-link" ng-click="toggleAll(false)">Untoggle All</div>
                     <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)">Toggle All</div>
@@ -50,19 +57,52 @@
                         <span class="input-group-text">Name</span>
                         <input id="creatureName" class="form-control" type="text" ng-model="popup.creature.name"/>
                     </div>
-                    <div id="inputContainer">
+                    <div class="inputContainer">
                         <div class="input-group mb-3">
                             <span class="input-group-text">INIT</span>
                             <input id="creatureInit" class="form-control" type="number" min="1" ng-model="popup.creature.initiative"/>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3" ng-if="!getSetting('pf2emode')">
                             <span class="input-group-text">HP</span>
-                            <input id="creatureHP" class="form-control" type="text" ng-model="popup.creature.maxhp" placeholder="HP/HitDice"/>
+                            <input id="creatureHP" class="form-control" type="text" ng-model="popup.creature.hptext" placeholder="HP/HitDice"/>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
+                            <span class="input-group-text">HP</span>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.maxhp"/>
+                        </div>
+                        <div class="input-group mb-3" ng-if="!getSetting('pf2emode')">
                             <span class="input-group-text">AC</span>
                             <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.ac"/>
                         </div>
+                        <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
+                            <span class="input-group-text">AC</span>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.dc.ac.base"/>
+                        </div>
+                        <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
+                            <span class="input-group-text">LVL</span>
+                            <input id="creatureLvl" class="form-control" type="number" min="1" ng-model="popup.creature.dc.level"/>
+                        </div>
+                    </div>
+                    <div class="inputContainer" ng-show="popup.creature.dc">
+                        <div class="input-group mb-3" >
+                            <span class="input-group-text">Fort DC</span>
+                            <input id="creatureFort" class="form-control" type="number" min="1" ng-model="popup.creature.dc.fortDC.base"/>
+                        </div>
+                        <div class="input-group mb-3" >
+                            <span class="input-group-text">Reflex DC</span>
+                            <input id="creatureReflex" class="form-control" type="number" min="1" ng-model="popup.creature.dc.reflexDC.base"/>
+                        </div>
+                        <div class="input-group mb-3" >
+                            <span class="input-group-text">Will DC</span>
+                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="popup.creature.dc.willDC.base"/>
+                        </div>
+                        <div class="input-group mb-3" >
+                            <span class="input-group-text">Actions</span>
+                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="popup.creature.dc.actions.base"/>
+                        </div>
+                    </div>
+                    <div class="subtext">
+                        {{popup.creature.mode}} mode
                     </div>
                     <div class="btnContainer btn-group">
                         <button id="addCreatureBtn" class="btn btn-primary" ng-click="popupSubmit()">{{popup.buttonText}}</button>
@@ -102,6 +142,18 @@
                     <div class="contents">{{alert.message}}</div>
                     <div><button class="btn" ng-click="toggleAlert(false)">OK</button></div>
                 </div>
+                <div id="settingMgr" class="popup" ng-if="settingMgr.toggled">
+                    <h3>Settings</h3>
+                    <div class="setting" ng-repeat="setting in settingMgr.settings track by $index">
+                        <div class="settingName">{{setting.name}}</div>
+                        <div class="settingDesc">{{setting.description}}</div>
+                        <div><input type="checkbox" ng-model="setting.value" /></div>
+                    </div>
+                    <div class="btnContainer btn-group">
+                        <button class="btn" ng-click="toggleSettingMgr(false, true)">Apply</button>
+                        <button class="btn btn-secondary" ng-click="toggleSettingMgr(false, false)">Cancel</button>
+                    </div>
+                </div>
                 <div id="list" class="container-fluid">
                     <div id="creature-{{$index}}" class='listItem container-fluid' ng-repeat="creature in state.creatures track by $index">
                         <div class='creatureInfo row'>
@@ -114,12 +166,13 @@
                             </div>
                             <div>
                                 <div class="title">AC</div>
-                                <div>{{creature.ac}}</div>
+                                <div ng-if="!getSetting('pf2emode')">{{creature.ac}}</div>
+                                <div ng-if="getSetting('pf2emode')">{{creature.dc.ac.val}}</div>
                             </div>
                             <div class="hp-container">
                                 <div class="title">HP <em class="temphp">(TEMP HP)</em></div>
                                 <div id="hpArea-{{$index}}" class='hpArea'>
-                                    <div id="hp-{{$index}}" class="hp">{{creature.hp}} <em class="temphp" ng-if="creature.temphp > 0">({{creature.temphp}})</em></div>
+                                    <div id="hp-{{$index}}" class="hp">{{creature.hp}}<span class="temphp" ng-if="creature.temphp > 0">({{creature.temphp}})</span> / {{creature.maxhp}}</div>
                                     <div id='modHP-{{$index}}' class='modhp input-group' ng-if="creature.maxhp > 0">
                                         <input class="form-control" id='modHPValue-{{$index}}' type='number' ng-model="creature.modhp.hp">
                                         <input class="form-control" id='tempHPValue-{{$index}}' type='number' ng-model="creature.modhp.temphp">
@@ -129,6 +182,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="dc-container" ng-if="creature.dc">
+                                <div><span class="name">Fort DC: </span><span class="value">{{creature.dc.fortDC.val}}</span></div>
+                                <div><span class="name">Reflex DC: </span><span class="value">{{creature.dc.reflexDC.val}}</span></div>
+                                <div><span class="name">Will DC: </span><span class="value">{{creature.dc.willDC.val}}</span></div>
+                                <div><span class="name">Actions: </span><span class="value">{{creature.dc.actions.val}}</span></div>
                             </div>
                             <div class="options">
                                 <div>
@@ -142,20 +201,24 @@
                                 <button id="toggle-status-${$index}" class="btn toggle-status" title="Toggle Creature Status" ng-click="toggleConditions($index)"><img ng-class="{'rotate-up': creature.displayConditions}" src="images/chevron-icon.svg" alt="Toggle Status" /></button>
                             </div>
                         </div>
-                        <div id='status-{{$index}}' class='row statusArea' ng-if="creature.displayConditions">
-                            <div class="exhaustionArea">
-                                <div class="input-group">
-                                    <span class="input-group-text exhaustion">EXHAUSTION:</span>
-                                    <input type='number' id='exhaustion-{{$index}}' class="form-control exhaustion" min='0' max='6' ng-model='creature.exhaustion' />
+                        <div id='status-{{$index}}' class='row statusArea' ng-if="creature.displayConditions">  
+                            <div class='conditionArea'>
+                                <div class='condition' ng-repeat="(condition, value) in creature.status.bool">
+                                    <div class="input-group" >
+                                        <div class="input-group-text">
+                                            <input type='checkbox' id='{{condition}}-{{$index}}' class="form-check-input mt-0" ng-model="creature.status.bool[condition]"/>
+                                        </div>
+                                        <div class="form-control" ng-click="updateCondition($parent.$index, condition, value)" ng-attr-title="{{describe(condition)}}">{{condition.toUpperCase()}}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class='conditionArea'>
-                                <div class='condition input-group' ng-repeat="(condition, value) in creature.status">
-                                    <div class="input-group-text">
-                                        <input type='checkbox' id='{{condition}}-{{$index}}' class="form-check-input mt-0" ng-model="creature.status[condition]"/>
+                            <div class="conditionArea">
+                                <div class='condition' ng-repeat="(condition, value) in creature.status.num">
+                                    <div  class="input-group">
+                                        <span class="input-group-text" ng-class="value > 0 ? 'active' : ''" ng-attr-title="{{describe(condition)}}">{{condition.toUpperCase()}}</span>
+                                        <input type='number' id='{{condition}}-{{$index}}' class="form-control" ng-class="value > 0 ? 'active' : ''" min='0' max='6' ng-model='creature.status.num[condition]' ng-change="updateCondition($parent.$index, condition, value)"/>
                                     </div>
-                                    <div class="form-control" ng-click="creature.status[condition] = !creature.status[condition]">{{condition.toUpperCase()}}</div>
-                                </div>
+                                </div>      
                             </div>
                         </div>
                     </div>

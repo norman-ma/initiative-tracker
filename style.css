@@ -4,6 +4,7 @@ body {
     --bgcolor3: #233043;
     --bgcolor4: #3D465A;
     --bgcolor5: #535F79;
+    --bgcolor6: #7788ab;
     --accent-blue: #3273ED;
     --accent-blue2: #0F45A9;
     --accent-red: #ED7D3A;
@@ -82,6 +83,21 @@ h1{
 #current-creature .next{
     display: flex;
     flex-direction: row-reverse
+}
+
+#currentDC {
+    font-size: 0.3em;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#currentDC .name{
+    color: var(--bgcolor5);
+    margin-right: 1em;
+}
+
+#currentDC .value{
+    font-weight: bold;
 }
 
 .current .btn-primary,
@@ -218,6 +234,50 @@ img.rotate-right{
     width: 100%;
 }
 
+#settingMgr {
+    display: flex;
+    flex-direction: column;
+    width: 40em;
+}
+
+#settingMgr > div {
+    width: 100%;
+}
+
+.setting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.8em;
+    border-bottom: 1px solid var(--bgcolor4);
+    padding: 1em;
+}
+
+.settingName {
+    width: 10%;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.settingDesc {
+    color: var(--bgcolor5)
+}
+
+#settingMgr .btnContainer {
+    width: 3.5em;
+    justify-content: center;
+}
+
+#settingMgr .btnContainer .btn-secondary {
+    background: var(--bgcolor3);
+    border: var(--bgcolor3);
+}
+
+#settingMgr .btnContainer .btn-secondary:hover {
+    background: var(--bgcolor4);
+    border: var(--bgcolor4);
+}
+
 #creatureMgr, #profileMgr{
     position: absolute;
     width: 30rem;
@@ -262,18 +322,18 @@ input[type="number"]{
     width: 100%;
 }
 
-#inputContainer {
+.inputContainer {
     display: flex;
     gap: 1rem;
 }
 
-#inputContainer>div{
+.inputContainer>div{
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 }
 
-#inputContainer>div .input-group-text{
+.inputContainer>div .input-group-text{
     width: 100%;
     border-top-right-radius: 0.375rem;
     border-bottom-left-radius: 0;
@@ -281,12 +341,32 @@ input[type="number"]{
     justify-content: space-around;
 }
 
-#inputContainer>div .form-control{
+.inputContainer>div .form-control{
     width: 100%;
     border-top-right-radius: 0;
     border-bottom-left-radius: 0.375rem;
     margin: 0;
     text-align: center;
+}
+
+.inputContainer.small {
+    font-size: 0.5em;
+}
+
+.dc-container {
+    font-size: 0.5em;
+}
+
+.dc-container .name{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--bgcolor6)
+}
+
+.subtext {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    color: var(--bgcolor5);
 }
 
 #creatureMgr .btn-primary, #profileMgr .btn-primary{
@@ -411,8 +491,8 @@ input[type="number"]{
 
 .creatureInfo>div{
     border-left: 1px solid var(--bgcolor4);
-    width: 8em;
     height: 3.5rem;
+    width: auto;
 }
 
 .creatureInfo .title {
@@ -604,7 +684,9 @@ input[type="number"]{
 }
 
 .input-group-text:has(> .form-check-input:checked),
-.input-group-text:has(> .form-check-input:checked) + .form-control{
+.input-group-text:has(> .form-check-input:checked) + .form-control,
+.input-group-text.active,
+.form-control.active{
     background: var(--accent-blue);
     color: inherit;
     border: none;
@@ -615,7 +697,8 @@ input[type="number"]{
 }
 
 .condition:hover .input-group-text:has(> .form-check-input:checked),
-.condition:hover .input-group-text:has(> .form-check-input:checked) + .form-control{
+.condition:hover .input-group-text:has(> .form-check-input:checked) + .form-control,
+.condition:hover .active{
     background: var(--accent-blue2);
 }
 
@@ -640,7 +723,7 @@ input[type="number"]{
     }
 
     .conditionArea{
-        width: 80%;
+        max-width: 100%;
     }
 
     .modHPOptions {
