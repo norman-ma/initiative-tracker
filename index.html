@@ -45,9 +45,9 @@
                     <button ng-click="toggleAdd()" class="btn btn-primary" title="Add Creature">+</button>
                     <div id="save-load" class="btn btn-link" ng-click="toggleProfileMgr(true)">Save/Load</div>
                     <div id="settings" class="btn btn-link" ng-click="toggleSettingMgr(true)">Settings</div>
-                    <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)">Clear All</div>
-                    <div id="untoggle-all" class="btn btn-link" ng-click="toggleAll(false)">Untoggle All</div>
-                    <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)">Toggle All</div>
+                    <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)" ng-if="state.creatures.length > 0">Clear All</div>
+                    <div id="untoggle-all" class="btn btn-link" ng-click="toggleAll(false)" ng-if="state.creatures.length > 0">Untoggle All</div>
+                    <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)" ng-if="state.creatures.length > 0">Toggle All</div>
                     <div id="clear-all" class="btn btn-link" ng-if="state.creatures.length > 0">{{state.creatures.length}}</div>
                 </div>
                 
