@@ -89,7 +89,21 @@ angular.module("inittrakrApp", ['ngCookies'])
                     value: false
                 }
             ],
-            temp: []
+            temp: [],
+            validate: () => {
+                let valid = true;
+                if($scope.state.creatures.length > 0) {
+                    if($scope.settingMgr.temp[1].value){
+                        valid = valid && $scope.state.creatures[0].mode == 'pf2e';
+                    } else {
+                        valid = valid && $scope.state.creatures[0].mode == 'dnd';
+                    }
+                    if(!valid){
+                        $scope.toggleAlert(true, "Cannot Change Mode", "Mode must be consistent across all creatures.")
+                    }
+                }
+                return valid;
+            }
         };
 
         const copy = (obj) => {
@@ -237,7 +251,7 @@ angular.module("inittrakrApp", ['ngCookies'])
         }
         /**
          * Describes condition based on mode
-         * @param {String} condition 
+         * @param {String} condition
          * @returns {String} description
          */
         $scope.describe = (condition) => {
@@ -269,7 +283,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
             $scope.popup.buttonText = "Add";
             $scope.popup.display = !$scope.popup.display;
-        };  
+        };
 
         $scope.toggleEdit = (index) => {
             $scope.popup.creature = copy($scope.state.creatures[index]);
@@ -308,13 +322,13 @@ angular.module("inittrakrApp", ['ngCookies'])
 
         $scope.toggleSettingMgr = (toggle, save=false) => {
             $scope.settingMgr.toggled = toggle;
-            if(!toggle){
-                if(save) {
-                    $scope.settingMgr.temp = copy($scope.settingMgr.settings);
+            if(toggle){
+                $scope.settingMgr.temp = copy($scope.settingMgr.settings);
+            } else {
+                if(save && $scope.settingMgr.validate()) {
+                    $scope.settingMgr.settings = copy($scope.settingMgr.temp);
                 } else {
-                    if($scope.settingMgr.temp.length > 0){
-                        $scope.settingMgr.settings = copy($scope.settingMgr.temp);
-                    }
+                    $scope.settingMgr.temp = null;
                 }
             }
         }
@@ -447,7 +461,7 @@ angular.module("inittrakrApp", ['ngCookies'])
                     return 1;
                 } else {
                     return 0;
-                } 
+                }
             });
         };
 
@@ -539,8 +553,8 @@ angular.module("inittrakrApp", ['ngCookies'])
         };
 
         /**
-         * 
-         * @param {Number} index 
+         *
+         * @param {Number} index
          * @param {String} type
          * Accepted Strings: damage, heal
          */
@@ -600,7 +614,7 @@ angular.module("inittrakrApp", ['ngCookies'])
          * @property {Number} current
          * @property {Array} settings
          * @returns {StatePackage}
-         * 
+         *
          * Creature attribute index
          * 0    name
          * 1    initiative
@@ -664,14 +678,14 @@ angular.module("inittrakrApp", ['ngCookies'])
         };
 
         /**
-         * 
-         * @param {StatePackage} tiny 
-         * 
+         *
+         * @param {StatePackage} tiny
+         *
          * @typedef State
          * @type {object}
          * @property {Array} creatures
          * @property {Number} current
-         * 
+         *
          * @typedef UnpackedState
          * @type {object}
          * @property {State} state

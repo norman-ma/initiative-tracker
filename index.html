@@ -144,7 +144,7 @@
                 </div>
                 <div id="settingMgr" class="popup" ng-if="settingMgr.toggled">
                     <h3>Settings</h3>
-                    <div class="setting" ng-repeat="setting in settingMgr.settings track by $index">
+                    <div class="setting" ng-repeat="setting in settingMgr.temp track by $index">
                         <div class="settingName">{{setting.name}}</div>
                         <div class="settingDesc">{{setting.description}}</div>
                         <div><input type="checkbox" ng-model="setting.value" /></div>
