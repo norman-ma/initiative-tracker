@@ -262,6 +262,10 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
         };
 
+        $scope.untoggleAll(except) {
+
+        }
+
         $scope.toggleAdd = () => {
             $scope.popup.creature = {
                 name: "",
@@ -312,10 +316,10 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
             if($scope.popup.edit.status) {
                 $scope.popup.creature.hp = $scope.popup.creature.maxhp;
-                $scope.state.creatures[$scope.popup.edit.index] = $scope.popup.creature;
+                $scope.state.creatures[$scope.popup.edit.index] = copy($scope.popup.creature);
                 $scope.popup.edit.status = false;
             } else {
-                $scope.state.creatures.push($scope.popup.creature);
+                $scope.state.creatures.push(copy($scope.popup.creature));
             }
             $scope.popup.display = false;
         };
@@ -712,9 +716,9 @@ angular.module("inittrakrApp", ['ngCookies'])
                         hp: 0,
                         temphp: 0
                     },
-                    status: critter[9] == 'pf2e' ? $scope.modes.pf2e.conditions : $scope.modes.dnd.conditions,
+                    status: critter[9] == 'pf2e' ? copy($scope.modes.pf2e.conditions) : copy($scope.modes.dnd.conditions),
                     mode: critter[9],
-                    dc: critter[9] == 'pf2e' ? $scope.modes.pf2e.dc : null,
+                    dc: critter[9] == 'pf2e' ? copy($scope.modes.pf2e.dc) : null,
                     isDead: false,
                     displayConditions: false
                 };
@@ -791,7 +795,7 @@ angular.module("inittrakrApp", ['ngCookies'])
         };
 
         $scope.buildProfileList = () => {
-            var list = $cookies.getAll();
+            var list = $cookies.getAll(); 
             $scope.profileMgr.profileList = [];
             for(let key of Object.keys(list)){
                 if(key.indexOf('inittrakr-') == 0 && key.length > 10){
