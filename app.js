@@ -59,8 +59,8 @@ angular.module("inittrakrApp", ['ngCookies'])
             current: 0
         };
 
-        $scope.popup = {
-            display: false,
+        $scope.creatureMgr = {
+            toggled: false,
             creature: null,
             buttonText: 'Add',
             edit: {
@@ -70,7 +70,7 @@ angular.module("inittrakrApp", ['ngCookies'])
         };
 
         $scope.alert = {
-            display: false,
+            toggled: false,
             title: "",
             message: ""
         };
@@ -262,71 +262,71 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
         };
 
-        $scope.untoggleAll(except) {
-
-        }
-
-        $scope.toggleAdd = () => {
-            $scope.popup.creature = {
-                name: "",
-                initiative: 0,
-                hptext: "",
-                maxhp: 0,
-                hp: 0,
-                ac: 0,
-                dc: $scope.getSetting('pf2emode') ? copy($scope.modes.pf2e.dc) : null,
-                temphp: 0,
-                status: $scope.getSetting('pf2emode') ? copy($scope.modes.pf2e.conditions) : copy($scope.modes.dnd.conditions),
-                modhp: {
-                    hp: 0,
-                    temphp: 0
-                },
-                isDead: false,
-                displayConditions: false,
-                mode: $scope.getSetting('pf2emode') ? 'pf2e' : 'dnd'
-            }
-            $scope.popup.buttonText = "Add";
-            $scope.popup.display = !$scope.popup.display;
-        };
-
-        $scope.toggleEdit = (index) => {
-            $scope.popup.creature = copy($scope.state.creatures[index]);
-            $scope.popup.buttonText = "Edit";
-            $scope.popup.display = !$scope.popup.display;
-            $scope.popup.edit.status = true;
-            $scope.popup.edit.index = index;
-        };
-
-        $scope.popupSubmit = () => {
-            let val = 0
-            if($scope.getSetting('pf2emode')){
-                val = $scope.popup.creature.maxhp;
-                for(let dc in $scope.popup.creature.dc){
-                    $scope.popup.creature.dc[dc].val = $scope.popup.creature.dc[dc].base
+        $scope.toggleCreatureMgr = (toggle, add=true, submit=false ,index=0) => {
+            if(toggle){
+                $scope.toggleSettingMgr(false);
+                $scope.toggleProfileMgr(false);
+                if(add){
+                    $scope.creatureMgr.creature = {
+                        name: "",
+                        initiative: 0,
+                        hptext: "",
+                        maxhp: 0,
+                        hp: 0,
+                        ac: 0,
+                        dc: $scope.getSetting('pf2emode') ? copy($scope.modes.pf2e.dc) : null,
+                        temphp: 0,
+                        status: $scope.getSetting('pf2emode') ? copy($scope.modes.pf2e.conditions) : copy($scope.modes.dnd.conditions),
+                        modhp: {
+                            hp: 0,
+                            temphp: 0
+                        },
+                        isDead: false,
+                        displayConditions: false,
+                        mode: $scope.getSetting('pf2emode') ? 'pf2e' : 'dnd'
+                    }
+                    $scope.creatureMgr.buttonText = "Add";
+                } else {
+                    $scope.creatureMgr.creature = copy($scope.state.creatures[index]);
+                    $scope.creatureMgr.edit.status = true;
+                    $scope.creatureMgr.buttonText = "Edit";
+                    $scope.creatureMgr.edit.index = index;
                 }
             } else {
-                let text = $scope.popup.creature.hptext.toUpperCase();
-                val = $scope.rollHP(text);
+                if(submit){
+                    let val = 0
+                    if($scope.getSetting('pf2emode')){
+                        val = $scope.creatureMgr.creature.maxhp;
+                        for(let dc in $scope.creatureMgr.creature.dc){
+                            $scope.creatureMgr.creature.dc[dc].val = $scope.creatureMgr.creature.dc[dc].base
+                        }
+                    } else {
+                        let text = $scope.creatureMgr.creature.hptext.toUpperCase();
+                        val = $scope.roll(text);
+                    }
+                    if(val) {
+                        $scope.creatureMgr.creature.maxhp = val;
+                        $scope.creatureMgr.creature.hp = val;
+                    } else {
+                        return;
+                    }
+                    if($scope.creatureMgr.edit.status) {
+                        $scope.creatureMgr.creature.hp = $scope.creatureMgr.creature.maxhp;
+                        $scope.state.creatures[$scope.creatureMgr.edit.index] = copy($scope.creatureMgr.creature);
+                        $scope.creatureMgr.edit.status = false;
+                    } else {
+                        $scope.state.creatures.push(copy($scope.creatureMgr.creature));
+                    }
+                }
             }
-            if(val) {
-                $scope.popup.creature.maxhp = val;
-                $scope.popup.creature.hp = val;
-            } else {
-                return;
-            }
-            if($scope.popup.edit.status) {
-                $scope.popup.creature.hp = $scope.popup.creature.maxhp;
-                $scope.state.creatures[$scope.popup.edit.index] = copy($scope.popup.creature);
-                $scope.popup.edit.status = false;
-            } else {
-                $scope.state.creatures.push(copy($scope.popup.creature));
-            }
-            $scope.popup.display = false;
+            $scope.creatureMgr.toggled = toggle;
         };
 
         $scope.toggleSettingMgr = (toggle, save=false) => {
             $scope.settingMgr.toggled = toggle;
             if(toggle){
+                $scope.toggleCreatureMgr(false);
+                $scope.toggleProfileMgr(false);
                 $scope.settingMgr.temp = copy($scope.settingMgr.settings);
             } else {
                 if(save && $scope.settingMgr.validate()) {
@@ -366,7 +366,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             return result + bonus;
         };
 
-        $scope.rollHP = (text) => {
+        $scope.roll = (text) => {
             let regex_dice = new RegExp('^\\d+(D|d)\\d+(\\+\\d+)?\\*?$');
             let regex_num = new RegExp('^\\d+$');
             if(regex_dice.test(text)){
@@ -431,7 +431,7 @@ angular.module("inittrakrApp", ['ngCookies'])
         }
 
         $scope.toggleAlert = (display, title, message) => {
-            $scope.alert.display = display;
+            $scope.alert.toggled = display;
             if(display) {
                 $scope.alert.title = title;
                 $scope.alert.message = message;
@@ -442,7 +442,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             $('html, body').animate({scrollTop: $(`#creature-${$scope.state.current}`).offset().top - ($('#current').height() + 35)});
         };
 
-        $scope.$watch(function() { return $scope.alert.display && $('#alert').is(':visible') }, function() {
+        $scope.$watch(function() { return $scope.alert.toggled && $('#alert').is(':visible') }, function() {
             if($('#alert').is(':visible')){
                 $('html, body').animate({scrollTop: $('#alert').offset().top - ($('#current').height() + 35)});
             }
@@ -517,7 +517,7 @@ angular.module("inittrakrApp", ['ngCookies'])
             }
             if(!$scope.getSetting('pf2emode')) {
                 if($scope.getSetting('autoreroll')){
-                    newCreature.maxhp = $scope.rollHP(newCreature.hptext.toUpperCase());
+                    newCreature.maxhp = $scope.roll(newCreature.hptext.toUpperCase());
                     newCreature.hp = newCreature.maxhp
                 }
             }
@@ -755,15 +755,14 @@ angular.module("inittrakrApp", ['ngCookies'])
             };
         };
 
-        $scope.toggleProfileMgr = (val) => {
-            if(val){
-                $scope.profileMgr.toggled = val;
+        $scope.toggleProfileMgr = (toggle) => {
+            if(toggle){
+                $scope.toggleSettingMgr(false);
+                $scope.toggleCreatureMgr(false);
             } else {
-                $scope.profileMgr.toggled = !$scope.profileMgr.toggled;
-            }
-            if(!$scope.profileMgr.toggled){
                 $scope.profileMgr.current = null;
             }
+            $scope.profileMgr.toggled = toggle;
         };
         $scope.setCurrentProfile = (profile) => {
             $scope.profileMgr.current = profile;

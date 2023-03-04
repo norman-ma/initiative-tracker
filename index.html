@@ -42,7 +42,7 @@
             </div>
             <div class="container-fluid body">
                 <div id="toggleAddCreatureBtn">
-                    <button ng-click="toggleAdd()" class="btn btn-primary" title="Add Creature">+</button>
+                    <button ng-click="toggleCreatureMgr(true)" class="btn btn-primary" title="Add Creature">+</button>
                     <div id="save-load" class="btn btn-link" ng-click="toggleProfileMgr(true)">Save/Load</div>
                     <div id="settings" class="btn btn-link" ng-click="toggleSettingMgr(true)">Settings</div>
                     <div id="clear-all" class="btn btn-link" ng-click="clearAll(false)" ng-if="state.creatures.length > 0">Clear All</div>
@@ -50,67 +50,66 @@
                     <div id="toggle-all" class="btn btn-link" ng-click="toggleAll(true)" ng-if="state.creatures.length > 0">Toggle All</div>
                     <div id="clear-all" class="btn btn-link" ng-if="state.creatures.length > 0">{{state.creatures.length}}</div>
                 </div>
-                
-                <div id="creatureMgr" ng-if="popup.display">
+                <div id="creatureMgr" ng-if="creatureMgr.toggled">
                     <div class="titleContainer"><h2>Add Creature</h2></div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Name</span>
-                        <input id="creatureName" class="form-control" type="text" ng-model="popup.creature.name"/>
+                        <input id="creatureName" class="form-control" type="text" ng-model="creatureMgr.creature.name"/>
                     </div>
                     <div class="inputContainer">
                         <div class="input-group mb-3">
                             <span class="input-group-text">INIT</span>
-                            <input id="creatureInit" class="form-control" type="number" min="1" ng-model="popup.creature.initiative"/>
+                            <input id="creatureInit" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.initiative"/>
                         </div>
                         <div class="input-group mb-3" ng-if="!getSetting('pf2emode')">
                             <span class="input-group-text">HP</span>
-                            <input id="creatureHP" class="form-control" type="text" ng-model="popup.creature.hptext" placeholder="HP/HitDice"/>
+                            <input id="creatureHP" class="form-control" type="text" ng-model="creatureMgr.creature.hptext" placeholder="HP/HitDice"/>
                         </div>
                         <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
                             <span class="input-group-text">HP</span>
-                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.maxhp"/>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.maxhp"/>
                         </div>
                         <div class="input-group mb-3" ng-if="!getSetting('pf2emode')">
                             <span class="input-group-text">AC</span>
-                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.ac"/>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.ac"/>
                         </div>
                         <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
                             <span class="input-group-text">AC</span>
-                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="popup.creature.dc.ac.base"/>
+                            <input id="creatureAC" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.ac.base"/>
                         </div>
                         <div class="input-group mb-3" ng-if="getSetting('pf2emode')">
                             <span class="input-group-text">LVL</span>
-                            <input id="creatureLvl" class="form-control" type="number" min="1" ng-model="popup.creature.dc.level"/>
+                            <input id="creatureLvl" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.level"/>
                         </div>
                     </div>
-                    <div class="inputContainer" ng-show="popup.creature.dc">
+                    <div class="inputContainer" ng-show="creatureMgr.creature.dc">
                         <div class="input-group mb-3" >
                             <span class="input-group-text">Fort DC</span>
-                            <input id="creatureFort" class="form-control" type="number" min="1" ng-model="popup.creature.dc.fortDC.base"/>
+                            <input id="creatureFort" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.fortDC.base"/>
                         </div>
                         <div class="input-group mb-3" >
                             <span class="input-group-text">Reflex DC</span>
-                            <input id="creatureReflex" class="form-control" type="number" min="1" ng-model="popup.creature.dc.reflexDC.base"/>
+                            <input id="creatureReflex" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.reflexDC.base"/>
                         </div>
                         <div class="input-group mb-3" >
                             <span class="input-group-text">Will DC</span>
-                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="popup.creature.dc.willDC.base"/>
+                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.willDC.base"/>
                         </div>
                         <div class="input-group mb-3" >
                             <span class="input-group-text">Actions</span>
-                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="popup.creature.dc.actions.base"/>
+                            <input id="creatureWill" class="form-control" type="number" min="1" ng-model="creatureMgr.creature.dc.actions.base"/>
                         </div>
                     </div>
                     <div class="subtext">
-                        {{popup.creature.mode}} mode
+                        {{creatureMgr.creature.mode}} mode
                     </div>
                     <div class="btnContainer btn-group">
-                        <button id="addCreatureBtn" class="btn btn-primary" ng-click="popupSubmit()">{{popup.buttonText}}</button>
-                        <button class="btn btn-secondary" ng-click="toggleAdd()" >Cancel</button>
+                        <button id="addCreatureBtn" class="btn btn-primary" ng-click="toggleCreatureMgr(false, true, true)">{{creatureMgr.buttonText}}</button>
+                        <button class="btn btn-secondary" ng-click="toggleCreatureMgr(false)" >Cancel</button>
                     </div>
                 </div>
                 <div id="profileMgr" ng-if="profileMgr.toggled">
-                    <button id="profileMgrClose" class="btn btn-link delete" ng-click="toggleProfileMgr()">Close</button>
+                    <button id="profileMgrClose" class="btn btn-link delete" ng-click="toggleProfileMgr(false)">Close</button>
                     <div class="titleContainer"><h2>Profile Manager</h2></div>
                     <div id="saveProfile" class="input-group mb-3">
                         <span class="input-group-text">Name</span>
@@ -138,12 +137,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="alert" class="popup" ng-if="alert.display">
-                    <h3>{{alert.title}}</h3>
-                    <div class="contents">{{alert.message}}</div>
-                    <div><button class="btn" ng-click="toggleAlert(false)">OK</button></div>
-                </div>
-                <div id="settingMgr" class="popup" ng-if="settingMgr.toggled">
+                <div id="settingMgr" ng-if="settingMgr.toggled">
                     <h3>Settings</h3>
                     <div class="setting" ng-repeat="setting in settingMgr.temp track by $index">
                         <div class="settingName">{{setting.name}}</div>
@@ -154,6 +148,11 @@
                         <button class="btn" ng-click="toggleSettingMgr(false, true)">Apply</button>
                         <button class="btn btn-secondary" ng-click="toggleSettingMgr(false, false)">Cancel</button>
                     </div>
+                </div>
+                <div id="alert" class="creatureMgr" ng-if="alert.toggled">
+                    <h3>{{alert.title}}</h3>
+                    <div class="contents">{{alert.message}}</div>
+                    <div><button class="btn" ng-click="toggleAlert(false)">OK</button></div>
                 </div>
                 <div id="list" class="container-fluid">
                     <div id="creature-{{$index}}" class='listItem container-fluid' ng-repeat="creature in state.creatures track by $index">
@@ -193,7 +192,7 @@
                             <div class="options">
                                 <div>
                                     <div class="btn-group">
-                                        <button class="btn edit-btn" ng-click="toggleEdit($index)"><img src="images/edit-icon.svg" alt="Edit" title="Edit" /></button>
+                                        <button class="btn edit-btn" ng-click="toggleCreatureMgr(true, false, false, $index)"><img src="images/edit-icon.svg" alt="Edit" title="Edit" /></button>
                                         <button class="btn duplicate-btn" ng-click="duplicate($index)"><img src="images/copy-icon.svg" alt="Duplicate" title="Duplicate" />
                                         </button><button class="btn delete-btn" ng-click='delete($index)'><img src="images/delete-icon.svg" alt="Delete" title="Delete" /></button>
                                     </div>
